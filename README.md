@@ -14,7 +14,7 @@
 <h2>📝 Sobre</h2>
 
 > ### Status:
-> Em desenvolvimento ⚠️: Implementar JS.
+> Em desenvolvimento ⚠️: Conluindo implementação JS.
 
 > ### Descrição:
 > Um pequeno site para servir de registro de tarefas a serem cumpridas.
