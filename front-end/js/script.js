@@ -152,6 +152,14 @@ const saveToDo = (name, detail, date) => {
   toDoModalinputDate.value = "";
 }
 
+const showAllTask = () => {
+  
+}
+
+const saveFromEdit = () => {
+
+}
+
 function countTaskFunc(countTask) {
   const withouTask = document.getElementById("without-task");
 
