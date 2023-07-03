@@ -9,7 +9,7 @@ const toDoModalinputDetail = document.getElementById("add-details");
 const toDoModalinputDate = document.getElementById("add-input-time-final");
 const toDoModalinputSubmit = document.getElementById("btn-form-submit");
 
-const showTaskModal = document.getElementById("show-task");
+const showTaskModal = document.getElementById("show-task-modal");
 const closeButtonShow = document.getElementById("btn-cross-show-modal");
 
 const editModal = document.getElementById("edit-modal-add");
@@ -20,8 +20,9 @@ const editDate = document.getElementById("edit-input-time-final");
 
 const toDoList = document.getElementById("to-do-list");
 
-// VARIÁVEIS DE UTILIDADE
-const countTask = 0;
+// VARIÁVEL DE UTILIDADE
+/* Contadora de tarefas */
+var countTask = 0;
 
 // FUNÇÕES ------------------------------------
 /* Exibindo a data de hoje */
@@ -151,6 +152,17 @@ const saveToDo = (name, detail, date) => {
   toDoModalinputDate.value = "";
 }
 
+function countTaskFunc(countTask) {
+  const withouTask = document.getElementById("without-task");
+
+  if (countTask > 0) {
+    withouTask.style.display = "none";
+
+  } else {
+    withouTask.style.display = "block";
+  }
+}
+
 // EVENTOS ------------------------------------
 /* Pegandos os dados da tarefa para criar o elemento HTML*/
 toDoModalForm.addEventListener("submit", (event) => {
@@ -163,9 +175,8 @@ toDoModalForm.addEventListener("submit", (event) => {
   if (inputName && inputDate) {
     saveToDo(inputName, inputDetail, inputDate);
 
-    toDoModalinputSubmit.onclick = () => {
-      addModal.close();
-    }
+    countTask++;
+    countTaskFunc(countTask);
   }
 })
 
@@ -221,5 +232,8 @@ document.addEventListener("click", (event => {
   /* Deletando a tarefa */
   if (targetElement.classList.contains("trash") || targetElement.classList.contains("fa-trash")) {
     parentElement.remove();
+
+    countTask--;
+    countTaskFunc(countTask);
   }
 }))
