@@ -9,6 +9,9 @@ const toDoModalinputDetail = document.getElementById("add-details");
 const toDoModalinputDate = document.getElementById("add-input-time-final");
 const toDoModalinputSubmit = document.getElementById("btn-form-submit");
 
+const showTaskModal = document.getElementById("show-task");
+const closeButtonShow = document.getElementById("btn-cross-show-modal");
+
 const editModal = document.getElementById("edit-modal-add");
 const closeButtonEdit = document.getElementById("btn-cross-edit-modal");
 const editInput = document.getElementById("edit-input");
@@ -16,6 +19,9 @@ const editDetails = document.getElementById("edit-details");
 const editDate = document.getElementById("edit-input-time-final");
 
 const toDoList = document.getElementById("to-do-list");
+
+// VARIÁVEIS DE UTILIDADE
+const countTask = 0;
 
 // FUNÇÕES ------------------------------------
 /* Exibindo a data de hoje */
@@ -35,6 +41,14 @@ newButton.onclick = () => {
 
 closeButtonAdd.onclick = () => {
   addModal.close();
+}
+
+function openShowModal(taskElement) {
+  showTaskModal.showModal();
+}
+
+closeButtonShow.onclick = () => {
+  showTaskModal.close();
 }
 
 /* Modal Editar tarefas */
@@ -138,7 +152,7 @@ const saveToDo = (name, detail, date) => {
 }
 
 // EVENTOS ------------------------------------
-/* Adicionando tarefa */
+/* Pegandos os dados da tarefa para criar o elemento HTML*/
 toDoModalForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
@@ -155,6 +169,7 @@ toDoModalForm.addEventListener("submit", (event) => {
   }
 })
 
+// UTILIDADE ------------------------------------
 /* Mapeando os buttons das tarefas */
 document.addEventListener("click", (event => {
   const targetElement = event.target;
@@ -189,6 +204,13 @@ document.addEventListener("click", (event => {
     console.log(btnConclude);
   }
 
+  /* Abrir o modal que exibe toda a tarefa */
+  if (targetElement.classList.contains("to-do-element-list")) {
+    let taskElement = parentElement.getElementsByClassName("to-do-task-element")[0];
+
+    openShowModal(taskElement);
+  }
+
   /* Abrir modal de editar */
   if (targetElement.classList.contains("edit")) {
     let btnEdit = parentElement.getElementsByClassName("edit")[0];
@@ -200,6 +222,4 @@ document.addEventListener("click", (event => {
   if (targetElement.classList.contains("trash") || targetElement.classList.contains("fa-trash")) {
     parentElement.remove();
   }
-
-
 }))

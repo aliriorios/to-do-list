@@ -30,26 +30,8 @@
     </header>
 
     <main id="to-do-list">
-      <!-- EDITAR QUANDO INSERIR O JS -->
-      <div class="to-do-element-list">
-        <div class="head-element">
-          <i class="fa-solid fa-grip-vertical"></i>
-          <i class="fa-solid fa-spinner progress"></i>
-          <p>Nome da tarefa</p>
-        </div>
-
-        <div class="txt-details"></div>
-
-        <div id="to-do-element-btn-container">
-          <span class="to-date">08/05/2023</span>
-
-          <button class="btn-element-to-do start"><i class="fa-solid fa-play"></i>Iniciar</button>
-          <button class="btn-element-to-do conclude"><i class="fa-solid fa-check"></i>Concluir</button>
-
-          <button class="btn-element-to-do edit"><i class="fa-solid fa-pen"></i>Editar</button>
-          <button class="btn-element-to-do trash"><i class="fa-solid fa-trash"></i></button>
-        </div>
-      </div>
+      <!-- PARA QUANDO NÃO HOUVER TAREFAS -->
+      <div id="without-task">Nenhuma tarefa</div>
 
       <!-- 
         <i class="fa-solid fa-circle-xmark"></i>
@@ -57,7 +39,7 @@
 
     </main>
 
-    <div id="btn-show-more">Show more</div>
+    <div id="btn-show-more">Mostrar mais</div>
 
     <!-- MODAL ADD TO DO -->
     <dialog id="new-modal-add" class="modal">
@@ -85,6 +67,13 @@
 
         <input type="submit" id="btn-form-submit" class="btn-style" value="Criar tarefa">
       </form>
+    </dialog>
+
+    <!-- MODAL QUE EXIBE A TAREFA COMPLETA -->
+    <dialog id="show-task-modal" class="modal">
+      <header>
+        <button id="btn-cross-show-modal" class="btn-cross-modal"><i class="fa-solid fa-xmark"></i></button>
+      </header>
     </dialog>
 
     <!-- MODAL EDIT TO DO -->

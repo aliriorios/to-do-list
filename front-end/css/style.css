@@ -7,17 +7,18 @@
   --light-red: #ff8181;
 
   /* Light Theme */
-  --bg-ligh-theme: #e2e2e2;
+  --bg-ligh-theme: #f5f5f5;
+  --bg-medium-theme: #e4e4e4;
   --bg-white: #FFFFFF;
 
   /* Dark Theme */
-  --bg-light-dark: #3a3b3d;
-  --bg-medium-dark: #1f1f1f;
+  --bg-ligh-dark: #636262;
+  --bg-medium-dark: #3b3b3b;
   --bg-strong-dark: #0F1014;
 
-  --text-grey: #dadbdd;
-  --text-light-grey: #A6A8AC;
-  --text-strong-grey: #8a8a8a;
+  /* Text */
+  --black: #000000;
+  --white: #ffffff;
 }
 
 * {
@@ -35,7 +36,7 @@
 }
 
 body {
-  color: var(--bg-strong-dark);
+  color: var(--black);
   background-image: linear-gradient(150deg, var(--complete-green-color), #2288FE, var(--progress-purple-color));
 
   height: 100vh;
@@ -61,7 +62,7 @@ body {
 h1 {
   font-size: 0.8rem;
 
-  color: var(--bg-strong-dark);
+  color: var(--black);
 
   display: inline;
 }
@@ -79,7 +80,6 @@ h1 {
   padding: 7px;
 
   border-radius: 5px;
-  background-color: var(--bg-ligh-theme);
 }
 
 #btn-turn-theme {
@@ -89,7 +89,7 @@ h1 {
 
   border-radius: 5px;
 
-  color: var(--bg-strong-dark);
+  color: var(--black);
   background-color: var(--bg-ligh-theme);
 
   transition: color, 0.3s;
@@ -104,7 +104,7 @@ h1 {
 }
 
 #btn-new {
-  color: var(--bg-strong-dark);
+  color: var(--black);
   padding: 5px 7px;
 
   font-size: 0.8rem;
@@ -119,8 +119,8 @@ h1 {
 #btn-turn-theme:hover,
 #btn-new:hover,
 .btn-cross-modal:hover {
-  color: white;
-  background-color: var(--text-light-grey);
+  color: var(--bg-white);
+  background-color: var(--bg-medium-theme);
   cursor: pointer;
 }
 
@@ -160,7 +160,6 @@ h1 {
 }
 
 .to-do-element-list>div>p {
-  /* color: var(--bg-strong-dark); */
   font-size: 0.8rem;
 
   margin-left: 20px;
@@ -184,7 +183,7 @@ h1 {
 }
 
 .fa-spinner {
-  color: var(--text-light-grey);
+  color: var(--bg-ligh-dark);
   margin-left: 8px;
 }
 
@@ -204,7 +203,7 @@ h1 {
 }
 
 .btn-element-to-do {
-  color: var(--bg-strong-dark);
+  color: var(--black);
   font-size: 0.7rem;
 
   padding: 4px 8px;
@@ -212,14 +211,13 @@ h1 {
 
   border-radius: 8px;
 
-  background-color: var(--bg-white);
+  background-color: var(--bg-medium-theme);
   border: none;
 }
 
 .btn-element-to-do:hover {
   cursor: pointer;
-  background-color: var(--text-light-grey);
-  color: var(--bg-white);
+  background-color: var(--bg-white);
 
   transition: color, 0.3s;
 }
@@ -228,6 +226,17 @@ h1 {
 .fa-check,
 .fa-pen {
   margin-right: 5px;
+}
+
+#without-task {
+  padding: 3px 0px;
+  margin-bottom: 3px;
+
+  text-align: center;
+  font-size: 0.7rem;
+
+  border-radius: 0px 0px 8px 8px;
+  background-color: var(--bg-ligh-theme);
 }
 
 #btn-show-more {
