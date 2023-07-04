@@ -1,5 +1,6 @@
 package com.myproject.todolist.model.entity;
 
+import com.myproject.todolist.model.entity.enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +10,6 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "tasks")
-@RequiredArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Getter
 @Setter
@@ -19,21 +19,41 @@ public class Task implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NonNull
     @EqualsAndHashCode.Include
     private Long id;
 
-    @NonNull
     @Column(name = "title")
     private String title;
 
     @Column(name = "description")
     private String description;
 
-    @NonNull
     @Column(name = "delivery_date")
     private LocalDate delivery;
 
+    // enum
+    @Column(name = "task_status")
+    private Integer taskStatus;
+
     // Association
 
+    // constructors
+    public Task(Long id, String title, String description, LocalDate delivery, TaskStatus taskStatus) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.delivery = delivery;
+        setTaskStatus(taskStatus);
+    }
+
+    // custom getter and setter
+    public TaskStatus getTaskStatus() {
+        return TaskStatus.valueOf(taskStatus);
+    }
+
+    public void setTaskStatus(TaskStatus taskStatus) {
+        if (taskStatus != null) {
+            this.taskStatus = taskStatus.getCode();
+        }
+    }
 }
