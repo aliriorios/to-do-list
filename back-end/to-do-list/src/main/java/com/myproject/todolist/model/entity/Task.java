@@ -50,6 +50,15 @@ public class Task implements Serializable {
         this.user = user;
     }
 
+    /* Teste sem associações */
+    /*public Task(Long id, String title, String description, LocalDate delivery, Integer taskStatus) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.delivery = delivery;
+        this.taskStatus = taskStatus;
+    }*/
+
     // custom getter and setter
     public TaskStatus getTaskStatus() {
         return TaskStatus.valueOf(taskStatus);
