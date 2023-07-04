@@ -36,14 +36,18 @@ public class Task implements Serializable {
     private Integer taskStatus;
 
     // Association
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     // constructors
-    public Task(Long id, String title, String description, LocalDate delivery, TaskStatus taskStatus) {
+    public Task(Long id, String title, String description, LocalDate delivery, TaskStatus taskStatus, User user) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.delivery = delivery;
         setTaskStatus(taskStatus);
+        this.user = user;
     }
 
     // custom getter and setter
