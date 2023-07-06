@@ -222,7 +222,8 @@ h1 {
 
 .fa-play,
 .fa-check,
-.fa-pen {
+.fa-pen,
+.fa-pause {
   margin-right: 5px;
 }
 
@@ -402,4 +403,8 @@ fieldset>label {
 
 .btn-disable:hover {
   cursor: not-allowed;
+}
+
+.inProgress {
+  background-color: var(--white);
 }

@@ -198,10 +198,23 @@ document.addEventListener("click", (event => {
   if (targetElement.classList.contains("start")) {
     let icon = parentElement.getElementsByClassName("progress")[0];
     let btnStart = parentElement.getElementsByClassName("start")[0];
+    let btnIconPlay = parentElement.getElementsByClassName("fa-play")[0];
+    let btnIconPause = parentElement.getElementsByClassName("fa-pause")[0];
 
-    icon.classList.add("fa-spinner-progress");
+    icon.classList.toggle("fa-spinner-progress");
+    btnStart.classList.toggle("inProgress");
 
-    btnDisable(btnStart);
+    if (btnIconPlay) { // Se iniciar a tarefa
+      btnStart.innerHTML = '<i class="fa-solid fa-pause"></i>Pausar';
+
+      btnIconPause = parentElement.getElementsByClassName("fa-pause")[0];
+      console.log(btnIconPause);
+
+    } else if (btnIconPause) { // Se pausar a tarefa
+      btnStart.innerHTML = '<i class="fa-solid fa-play"></i>Iniciar';
+
+      btnIconPlay = parentElement.getElementsByClassName("fa-play")[0];
+    }
   }
 
   /* Concluindo a tarefa */
@@ -212,6 +225,7 @@ document.addEventListener("click", (event => {
     let btnEdit = parentElement.getElementsByClassName("edit")[0];
 
     icon.classList.remove("fa-spinner");
+    icon.classList.remove("fa-spinner-progress");
     icon.classList.add("fa-circle-check");
 
     // parentElement.style.backgroundColor = "#8a8a8a";
