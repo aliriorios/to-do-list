@@ -231,6 +231,10 @@ h1 {
   margin-right: 5px;
 }
 
+.auxDateValue { /* Auxiliar */
+  display: none;
+}
+
 #without-task {
   padding: 8px 0px;
   margin-bottom: 10px;

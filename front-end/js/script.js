@@ -56,17 +56,6 @@ function dateFormatter(date) {
   return formatter;
 }
 
-function dateValidation (date) { // Desnecessária, mas deixei!!
-  const now = new Date();
-
-  if (date.getDate() >= now.getDate()) {
-    return true;
-
-  } else {
-    return false;
-  }
-}
-
 /* Modal de Adicionar tarefa */
 newButton.onclick = () => {
   addModal.showModal();
@@ -218,7 +207,7 @@ toDoModalForm.addEventListener("submit", (event) => {
   const inputDate = new Date(toDoModalinputDate.value);
   inputDate.setDate(inputDate.getDate() + 1); // Resolução do Day -1
 
-  if (inputName && dateValidation(inputDate)) {
+  if (inputName && inputDate) {
     saveToDo(inputName, inputDetail, inputDate);
 
     countTask++;
