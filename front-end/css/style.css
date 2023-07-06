@@ -220,6 +220,10 @@ h1 {
   transition: color, 0.3s;
 }
 
+.start {
+  min-width: 63.5px;
+}
+
 .fa-play,
 .fa-check,
 .fa-pen,
@@ -320,6 +324,7 @@ fieldset>label {
   border: 1px solid var(--bg-medium-theme);
   border-radius: 10px;
 
+  font-size: 0.7rem;
   color: var(--black);
   background: var(--bg-ligh-theme);
   outline: 0;

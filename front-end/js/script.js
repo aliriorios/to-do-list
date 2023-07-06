@@ -30,10 +30,21 @@ setInterval(() => {
   const currentDate = document.getElementById("current-date");
 
   let date = new Date();
+
+  currentDate.innerHTML = '<i class="fa-solid fa-calendar-days"></i>' + dateFormatter(date);
+}, 1000);
+
+function dateFormatter(date) {
   let monName = new Array("Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez");
 
-  currentDate.innerHTML = '<i class="fa-solid fa-calendar-days"></i>' + date.getDate() + " " + monName[date.getMonth()] + " " + date.getFullYear();
-}, 1000);
+  let formatter = date.getDate() + " " + monName[date.getMonth()] + " " + date.getFullYear();
+
+  return formatter;
+}
+
+function dateValidation (date) {
+
+}
 
 /* Modal de Adicionar tarefa */
 newButton.onclick = () => {
@@ -178,10 +189,11 @@ toDoModalForm.addEventListener("submit", (event) => {
 
   const inputName = toDoModalinputName.value;
   const inputDetail = toDoModalinputDetail.value;
-  const inputDate = toDoModalinputDate.value;
+
+  const inputDate = new Date(toDoModalinputDate.value);
 
   if (inputName && inputDate) {
-    saveToDo(inputName, inputDetail, inputDate);
+    saveToDo(inputName, inputDetail, dateFormatter(inputDate));
 
     countTask++;
     countTaskFunc(countTask);
