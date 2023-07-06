@@ -60,7 +60,7 @@
 
         <fieldset id="add-date" class="final-time">
           <label for="add-input-time-final">Data para entrega</label>
-          <input type="date" id="add-input-time-final" class="input-time" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">
+          <input type="date" id="add-input-time-final" class="input-time" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" min="1899-01-01">
         </fieldset>
 
         <input type="submit" id="btn-form-submit" class="btn-style" value="Criar tarefa">
@@ -95,9 +95,10 @@
             placeholder="Insira os detalhes"></textarea>
         </fieldset>
 
+        <!-- Lembrar de alterar no JS a data mínima -->
         <fieldset id="edit-date" class="final-time">
           <label for="edit-input-time-final">Data para entrega</label>
-          <input type="date" id="edit-input-time-final" class="input-time" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">
+          <input type="date" id="edit-input-time-final" class="input-time" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" min="1899-01-01">
         </fieldset>
 
         <input type="submit" id="edit-form-submit" class="btn-style" value="Salvar">

@@ -34,16 +34,37 @@ setInterval(() => {
   currentDate.innerHTML = '<i class="fa-solid fa-calendar-days"></i>' + dateFormatter(date);
 }, 1000);
 
+// Estabelecendo a data mínima para o input date
+setInterval(() => {
+  let currentDate = new Date();
+
+  let day = currentDate.getDate() < 10 ? '0' + currentDate.getDate() : currentDate.getDate();
+  let month = (currentDate.getMonth() + 1) < 10 ? '0' + (currentDate.getMonth() + 1) : (currentDate.getMonth() + 1);
+  let year = currentDate.getFullYear();
+
+  currentDate = year + '-' + month + '-' + day;
+  document.getElementById("add-input-time-final").setAttribute("min", currentDate);
+  document.getElementById("edit-input-time-final").setAttribute("min", currentDate);
+}, 1000);
+
 function dateFormatter(date) {
   let monName = new Array("Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez");
+  let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
 
-  let formatter = date.getDate() + " " + monName[date.getMonth()] + " " + date.getFullYear();
+  let formatter = day + " " + monName[date.getMonth()] + " " + date.getFullYear();
 
   return formatter;
 }
 
-function dateValidation (date) {
+function dateValidation (date) { // Desnecessária, mas deixei!!
+  const now = new Date();
 
+  if (date.getDate() >= now.getDate()) {
+    return true;
+
+  } else {
+    return false;
+  }
 }
 
 /* Modal de Adicionar tarefa */
@@ -122,7 +143,7 @@ const saveToDo = (name, detail, date) => {
   toDoButtonContainer.setAttribute("id", "to-do-element-btn-container");
 
   const toDoDate = document.createElement("span");
-  toDoDate.innerText = date;
+  toDoDate.innerText = dateFormatter(date);
   toDoDate.classList.add("to-date");
 
   const btnStart = document.createElement("button");
@@ -190,10 +211,15 @@ toDoModalForm.addEventListener("submit", (event) => {
   const inputName = toDoModalinputName.value;
   const inputDetail = toDoModalinputDetail.value;
 
+  /*
+  A informação do input date está chegando com 1 dia a menos!
+  Não Sei se é um problema comum do input!
+  */
   const inputDate = new Date(toDoModalinputDate.value);
+  inputDate.setDate(inputDate.getDate() + 1); // Resolução do Day -1
 
-  if (inputName && inputDate) {
-    saveToDo(inputName, inputDetail, dateFormatter(inputDate));
+  if (inputName && dateValidation(inputDate)) {
+    saveToDo(inputName, inputDetail, inputDate);
 
     countTask++;
     countTaskFunc(countTask);
@@ -220,7 +246,6 @@ document.addEventListener("click", (event => {
       btnStart.innerHTML = '<i class="fa-solid fa-pause"></i>Pausar';
 
       btnIconPause = parentElement.getElementsByClassName("fa-pause")[0];
-      console.log(btnIconPause);
 
     } else if (btnIconPause) { // Se pausar a tarefa
       btnStart.innerHTML = '<i class="fa-solid fa-play"></i>Iniciar';
@@ -245,8 +270,6 @@ document.addEventListener("click", (event => {
     btnDisable(btnConclude);
     btnDisable(btnStart);
     btnDisable(btnEdit);
-
-    console.log(btnConclude);
   }
 
   /* Abrir o modal que exibe toda a tarefa */

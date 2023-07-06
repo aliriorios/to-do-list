@@ -181,7 +181,7 @@ h1 {
 }
 
 .fa-spinner {
-  color: var(--bg-ligh-dark);
+  color: rgba(131, 131, 131, 0.7);
   margin-left: 8px;
 }
 
