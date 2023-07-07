@@ -14,7 +14,8 @@ const closeButtonShow = document.getElementById("btn-cross-show-modal");
 
 const editModal = document.getElementById("edit-modal-add");
 const closeButtonEdit = document.getElementById("btn-cross-edit-modal");
-let editInput = document.getElementById("edit-input");
+const editForm = document.getElementById("edit-form-todo");
+let editName = document.getElementById("edit-input");
 let editDetails = document.getElementById("edit-details");
 let editDate = document.getElementById("edit-input-time-final");
 
@@ -23,6 +24,7 @@ const toDoList = document.getElementById("to-do-list");
 let taskElementName;
 let taskElementDetails;
 let taskElementDate;
+let taskElementAuxDate;
 
 // VARIÁVEL DE UTILIDADE
 /* Contadora de tarefas */
@@ -190,6 +192,26 @@ const saveToDo = (name, detail, date) => {
   toDoModalinputDate.value = "";
 }
 
+/* Atualizando os dados da edição */
+const updateToDo = (name, details, date) =>{
+  const allToDo = document.querySelectorAll(".to-do-element-list");
+
+  allToDo.forEach((value) => {
+    /* Vou utilizar o nome como IDENTIFICADOR */
+    let toDoNameNameInput = value.querySelector(".to-do-title");
+    let toDoDetailInput = value.querySelector(".txt-details");
+    let toDoDateInput = value.querySelector(".to-date");
+    let toDoAuxDate = value.querySelector(".aux-date");
+
+    if (toDoNameNameInput.innerText === taskElementName) {
+      toDoNameNameInput.innerText = name;
+      toDoDetailInput.innerText = details;
+      toDoDateInput.innerText = dateFormatter(date);
+      toDoAuxDate.innerText = date;
+    }
+  });
+}
+
 function countTaskFunc(countTask) {
   const withouTask = document.getElementById("without-task");
 
@@ -221,6 +243,7 @@ toDoModalForm.addEventListener("submit", (event) => {
 
     countTask++;
     countTaskFunc(countTask);
+    addModal.close();
   }
 })
 
@@ -287,12 +310,14 @@ document.addEventListener("click", (event => {
   if (targetElement.classList.contains("edit")) {
     taskElementName = parentElement.getElementsByClassName("to-do-title")[0].innerHTML;
     taskElementDetails = parentElement.getElementsByClassName("txt-details")[0].innerHTML;
-    taskElementDate = parentElement.getElementsByClassName("aux-date")[0].innerHTML;
+    taskElementDate = parentElement.getElementsByClassName("to-date")[0].innerHTML;
+    taskElementAuxDate = parentElement.getElementsByClassName("aux-date")[0].innerHTML;
 
     // Exibindo
-    document.getElementById("edit-input").value = taskElementName;
-    document.getElementById("edit-details").value = taskElementDetails;
-    document.getElementById("edit-input-time-final").value = dateFormatterToEdit(taskElementDate);
+    editName.value = taskElementName;
+    editDetails.value = taskElementDetails;
+    editDate.value = dateFormatterToEdit(taskElementAuxDate);
+
     editModal.showModal();
   }
 
@@ -304,3 +329,18 @@ document.addEventListener("click", (event => {
     countTaskFunc(countTask);
   }
 }))
+
+editForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const newInputName = editName.value;
+  const newInputDetails = editDetails.value;
+  const newInputDate = new Date(editDate.value);
+  newInputDate.setDate(newInputDate.getDate() + 1);
+
+  if (newInputName && newInputDate) {
+    // Atualizar
+    updateToDo(newInputName, newInputDetails, newInputDate);
+    editModal.close();
+  }
+});
