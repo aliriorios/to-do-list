@@ -5,6 +5,7 @@
   --complete-green-color: #2ADCB2;
   --progress-purple-color: #A954FF;
   --light-red: #ff8181;
+  --warning: #f5c825;
 
   /* Light Theme */
   --bg-ligh-theme: #f5f5f5;
@@ -197,6 +198,11 @@ h1 {
 
 .fa-circle-xmark {
   color: var(--light-red);
+  margin-left: 8px;
+}
+
+.fa-circle-exclamation {
+  color: var(--warning);
   margin-left: 8px;
 }
 
