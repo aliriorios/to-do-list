@@ -261,9 +261,9 @@ document.addEventListener("click", (event => {
     console.log(taskElementDate);
 
     /* CONCLUIR!!!!! ---------------------------------------------------------------- */
-    document.getElementsByClassName("show-name").innerHTML = taskElementName;
-    document.getElementsByClassName("details-area").innerHTML = taskElementDetails;
-    document.getElementsByClassName("show-date").innerHTML = "" + taskElementDate;
+    document.getElementById("show-name").innerText = taskElementName;
+    document.getElementById("details-area").innerText = taskElementDetails;
+    document.getElementById("show-date").innerText = 'Para: ' + taskElementDate;
     showTaskModal.showModal(); // Abrindo o modal
   }
 

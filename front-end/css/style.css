@@ -400,10 +400,10 @@ fieldset>label {
   font-weight: normal;
 }
 
-.details-area {
-  margin-top: 10px;
+#details-area {
+  margin-top: 15px;
 
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   color: var(--black);
 }
 
