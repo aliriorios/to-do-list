@@ -425,3 +425,7 @@ fieldset>label {
 .inProgress {
   background-color: var(--white);
 }
+
+.aux-date {
+  display: none;
+}

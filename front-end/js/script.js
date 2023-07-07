@@ -20,12 +20,15 @@ let editDate = document.getElementById("edit-input-time-final");
 
 const toDoList = document.getElementById("to-do-list");
 
+let taskElementName;
+let taskElementDetails;
+let taskElementDate;
+
 // VARIÁVEL DE UTILIDADE
 /* Contadora de tarefas */
 var countTask = 0;
 
 // FUNÇÕES ------------------------------------
-/* Exibindo a data de hoje */
 setInterval(() => {
   const currentDate = document.getElementById("current-date");
 
@@ -47,6 +50,8 @@ setInterval(() => {
   document.getElementById("edit-input-time-final").setAttribute("min", currentDate);
 }, 1000);
 
+/* Exibindo a data de hoje */
+
 function dateFormatter(date) {
   let monName = new Array("Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez");
   let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
@@ -54,6 +59,16 @@ function dateFormatter(date) {
   let formatter = day + " " + monName[date.getMonth()] + " " + date.getFullYear();
 
   return formatter;
+}
+
+function dateFormatterToEdit(date) {
+  let objDate = new Date(date);
+
+  let day = objDate.getDate() < 10 ? '0' + objDate.getDate() : objDate.getDate();
+  let month = (objDate.getMonth() + 1) < 10 ? '0' + (objDate.getMonth() + 1) : (objDate.getMonth() + 1);
+  let year = objDate.getFullYear();
+
+  return year + '-' + month + '-' + day;
 }
 
 /* Modal de Adicionar tarefa */
@@ -67,11 +82,6 @@ closeButtonAdd.onclick = () => {
 
 closeButtonShow.onclick = () => {
   showTaskModal.close();
-}
-
-/* Modal Editar tarefas */
-function openEditModal(btnEdit) {
-  editModal.showModal();
 }
 
 closeButtonEdit.onclick = () => {
@@ -128,6 +138,11 @@ const saveToDo = (name, detail, date) => {
   const toDoButtonContainer = document.createElement("div");
   toDoButtonContainer.setAttribute("id", "to-do-element-btn-container");
 
+  /* Auxiliar para guardar o valor do date antes de converter */
+  const auxDate = document.createElement("span");
+  auxDate.innerText = date;
+  auxDate.classList.add("aux-date");
+
   const toDoDate = document.createElement("span");
   toDoDate.innerText = dateFormatter(date);
   toDoDate.classList.add("to-date");
@@ -160,6 +175,7 @@ const saveToDo = (name, detail, date) => {
   toDoButtonContainer.appendChild(btnConclude);
   toDoButtonContainer.appendChild(btnEdit);
   toDoButtonContainer.appendChild(btnTrash);
+  toDoButtonContainer.appendChild(auxDate);
   toDoCard.appendChild(toDoButtonContainer);
 
   /* Adicionando toda a criação no HTML */
@@ -252,15 +268,11 @@ document.addEventListener("click", (event => {
 
   /* Abrir o modal que exibe toda a tarefa */
   if (targetElement.classList.contains("to-do-element-list")) {
-    let taskElementName = parentElement.getElementsByClassName("to-do-title")[0].innerHTML;
-    let taskElementDetails = parentElement.getElementsByClassName("txt-details")[0].innerHTML;
-    let taskElementDate = parentElement.getElementsByClassName("to-date")[0].innerHTML;
+    taskElementName = parentElement.getElementsByClassName("to-do-title")[0].innerHTML;
+    taskElementDetails = parentElement.getElementsByClassName("txt-details")[0].innerHTML;
+    taskElementDate = parentElement.getElementsByClassName("to-date")[0].innerHTML;
 
-    console.log(taskElementName);
-    console.log(taskElementDetails);
-    console.log(taskElementDate);
-
-    /* CONCLUIR!!!!! ---------------------------------------------------------------- */
+    // Exibindo!
     document.getElementById("show-name").innerText = taskElementName;
     document.getElementById("details-area").innerText = taskElementDetails;
     document.getElementById("show-date").innerText = 'Para: ' + taskElementDate;
@@ -269,9 +281,15 @@ document.addEventListener("click", (event => {
 
   /* Abrir modal de editar */
   if (targetElement.classList.contains("edit")) {
-    let btnEdit = parentElement.getElementsByClassName("edit")[0];
+    taskElementName = parentElement.getElementsByClassName("to-do-title")[0].innerHTML;
+    taskElementDetails = parentElement.getElementsByClassName("txt-details")[0].innerHTML;
+    taskElementDate = parentElement.getElementsByClassName("aux-date")[0].innerHTML;
 
-    openEditModal(btnEdit);
+    // Exibindo
+    document.getElementById("edit-input").value = taskElementName;
+    document.getElementById("edit-details").value = taskElementDetails;
+    document.getElementById("edit-input-time-final").value = dateFormatterToEdit(taskElementDate);
+    editModal.showModal();
   }
 
   /* Deletando a tarefa */
