@@ -14,9 +14,9 @@ const closeButtonShow = document.getElementById("btn-cross-show-modal");
 
 const editModal = document.getElementById("edit-modal-add");
 const closeButtonEdit = document.getElementById("btn-cross-edit-modal");
-const editInput = document.getElementById("edit-input");
-const editDetails = document.getElementById("edit-details");
-const editDate = document.getElementById("edit-input-time-final");
+let editInput = document.getElementById("edit-input");
+let editDetails = document.getElementById("edit-details");
+let editDate = document.getElementById("edit-input-time-final");
 
 const toDoList = document.getElementById("to-do-list");
 
@@ -65,10 +65,6 @@ closeButtonAdd.onclick = () => {
   addModal.close();
 }
 
-function openShowModal(taskElement) {
-  showTaskModal.showModal();
-}
-
 closeButtonShow.onclick = () => {
   showTaskModal.close();
 }
@@ -115,6 +111,7 @@ const saveToDo = (name, detail, date) => {
 
   const toDoTitle = document.createElement("p");
   toDoTitle.innerText = name;
+  toDoTitle.className = "to-do-title";
 
   toDoHead.appendChild(iconGrip);
   toDoHead.appendChild(iconProgress);
@@ -171,14 +168,6 @@ const saveToDo = (name, detail, date) => {
   toDoModalinputName.value = "";
   toDoModalinputDetail.value = "";
   toDoModalinputDate.value = "";
-}
-
-const showAllTask = () => {
-  
-}
-
-const saveFromEdit = () => {
-
 }
 
 function countTaskFunc(countTask) {
@@ -263,9 +252,19 @@ document.addEventListener("click", (event => {
 
   /* Abrir o modal que exibe toda a tarefa */
   if (targetElement.classList.contains("to-do-element-list")) {
-    let taskElement = parentElement.getElementsByClassName("to-do-task-element")[0];
+    let taskElementName = parentElement.getElementsByClassName("to-do-title")[0].innerHTML;
+    let taskElementDetails = parentElement.getElementsByClassName("txt-details")[0].innerHTML;
+    let taskElementDate = parentElement.getElementsByClassName("to-date")[0].innerHTML;
 
-    openShowModal(taskElement);
+    console.log(taskElementName);
+    console.log(taskElementDetails);
+    console.log(taskElementDate);
+
+    /* CONCLUIR!!!!! ---------------------------------------------------------------- */
+    document.getElementsByClassName("show-name").innerHTML = taskElementName;
+    document.getElementsByClassName("details-area").innerHTML = taskElementDetails;
+    document.getElementsByClassName("show-date").innerHTML = "" + taskElementDate;
+    showTaskModal.showModal(); // Abrindo o modal
   }
 
   /* Abrir modal de editar */

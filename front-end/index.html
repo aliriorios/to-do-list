@@ -70,9 +70,12 @@
     <!-- MODAL QUE EXIBE A TAREFA COMPLETA -->
     <!-- Criar com HTML no JS com as informações -->
     <dialog id="show-task-modal" class="modal">
-      <header>
+      <header class="header-modal">
+        <h1 class="show-name">Nome</h1>
+        <span class="show-date to-date">Para: </span>
         <button id="btn-cross-show-modal" class="btn-cross-modal"><i class="fa-solid fa-xmark"></i></button>
       </header>
+      <p class="details-area">Descrição de toda a tarefa a ser executada!!</p>
     </dialog>
 
     <!-- MODAL EDIT TO DO -->
@@ -95,7 +98,6 @@
             placeholder="Insira os detalhes"></textarea>
         </fieldset>
 
-        <!-- Lembrar de alterar no JS a data mínima -->
         <fieldset id="edit-date" class="final-time">
           <label for="edit-input-time-final">Data para entrega</label>
           <input type="date" id="edit-input-time-final" class="input-time" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" min="1899-01-01">

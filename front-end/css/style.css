@@ -395,6 +395,18 @@ fieldset>label {
   cursor: pointer;
 }
 
+#show-task-modal > header > h1 {
+  font-size: 0.8rem;
+  font-weight: normal;
+}
+
+.details-area {
+  margin-top: 10px;
+
+  font-size: 0.7rem;
+  color: var(--black);
+}
+
 /* #btn-form-submit:hover {
   color: white;
   background-color: var(--text-light-grey);
