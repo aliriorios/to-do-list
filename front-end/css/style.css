@@ -149,7 +149,7 @@ h1 {
   justify-content: space-between;
   align-items: center;
 
-  transition: cursor, 0.3s;
+  transition: cursor, 0.1s;
 }
 
 .to-do-element-list:hover {
