@@ -209,13 +209,13 @@ h1 {
 
   border-radius: 8px;
 
-  background-color: var(--bg-medium-theme);
+  background-color: var(--white);
   border: none;
 }
 
 .btn-element-to-do:hover {
   cursor: pointer;
-  background-color: var(--bg-white);
+  background-color: var(--bg-medium-theme);
 
   transition: color, 0.3s;
 }
@@ -415,7 +415,7 @@ fieldset>label {
 
 /* BUTTON DISABLE --------------------- */
 .btn-disable {
-  background-color: var(--white);
+  background-color: var(--bg-medium-theme);
 }
 
 .btn-disable:hover {
@@ -423,7 +423,7 @@ fieldset>label {
 }
 
 .inProgress {
-  background-color: var(--white);
+  background-color: var(--bg-medium-theme);
 }
 
 .aux-date {
