@@ -30,15 +30,21 @@ var countTask = 0;
 
 // FUNÇÕES ------------------------------------
 setInterval(() => {
-  const currentDate = document.getElementById("current-date");
-
-  let date = new Date();
-
-  currentDate.innerHTML = '<i class="fa-solid fa-calendar-days"></i>' + dateFormatter(date);
+  showHeaderDate();
+  minInputDateValidation();
 }, 1000);
 
-// Estabelecendo a data mínima para o input date
-setInterval(() => {
+/* Exibindo a data de hoje */
+function showHeaderDate () {
+  const currentDate = document.getElementById("current-date");
+  
+  let date = new Date();
+  
+  currentDate.innerHTML = '<i class="fa-solid fa-calendar-days"></i>' + dateFormatter(date);
+}
+
+/* Estabelecendo a data mínima para o input date */
+function minInputDateValidation () {
   let currentDate = new Date();
 
   let day = currentDate.getDate() < 10 ? '0' + currentDate.getDate() : currentDate.getDate();
@@ -48,9 +54,7 @@ setInterval(() => {
   currentDate = year + '-' + month + '-' + day;
   document.getElementById("add-input-time-final").setAttribute("min", currentDate);
   document.getElementById("edit-input-time-final").setAttribute("min", currentDate);
-}, 1000);
-
-/* Exibindo a data de hoje */
+}
 
 function dateFormatter(date) {
   let monName = new Array("Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez");
