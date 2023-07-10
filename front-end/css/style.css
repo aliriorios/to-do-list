@@ -83,6 +83,10 @@ h1 {
   border-radius: 5px;
 }
 
+#sun-icon {
+  color: #fac400;
+}
+
 #btn-turn-theme {
   font-size: 1rem;
 
@@ -97,7 +101,7 @@ h1 {
 }
 
 /* NEW BUTTON */
-.fa-plus {
+#plus-icon {
   margin-right: 5px;
 
   font-style: normal;

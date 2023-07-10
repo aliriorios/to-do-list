@@ -1,4 +1,5 @@
 // SELEÇÃO DE ELEMENTOS -----------------------
+const themeButton = document.getElementById("btn-turn-theme");
 const newButton = document.getElementById("btn-new");
 const addModal = document.getElementById("new-modal-add");
 const closeButtonAdd = document.getElementById("btn-cross-add-modal");
@@ -249,7 +250,7 @@ toDoModalForm.addEventListener("submit", (event) => {
 
 // UTILIDADE ------------------------------------
 /* Mapeando os buttons das tarefas */
-document.addEventListener("click", (event => {
+document.addEventListener("click", (event) => {
   const targetElement = event.target;
   let parentElement = targetElement.closest(".to-do-element-list");
 
@@ -328,7 +329,7 @@ document.addEventListener("click", (event => {
     countTask--;
     countTaskFunc(countTask);
   }
-}))
+})
 
 editForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -342,5 +343,45 @@ editForm.addEventListener("submit", (event) => {
     // Atualizar
     updateToDo(newInputName, newInputDetails, newInputDate);
     editModal.close();
+  }
+});
+
+// Botãao de thema
+themeButton.addEventListener("mouseover", (event) => {
+  const targetElement = event.target;
+
+  if (targetElement.querySelector("#sun-icon") || targetElement.querySelector("#btn-turn-theme")) {
+    const icon = document.getElementById("sun-icon");
+    icon.classList.add("fa-beat");
+  }
+});
+
+themeButton.addEventListener("mouseleave", (event) => {
+  const targetElement = event.target;
+
+  if (targetElement.querySelector("#sun-icon") || targetElement.querySelector("#btn-turn-theme")) {
+    const icon = document.getElementById("sun-icon");
+    icon.classList.remove("fa-beat");
+  }
+});
+
+// Botão de nova tarefa
+newButton.addEventListener("mouseover", (event) => {
+  const targetElement = event.target;
+
+  if (targetElement.querySelector("#plus-icon") || targetElement.querySelector("#btn-new")) {
+    const icon = document.getElementById("plus-icon");
+    icon.classList.add("fa-beat");
+    icon.style.color = "var(--complete-green-color)";
+  }
+});
+
+newButton.addEventListener("mouseleave", (event) => {
+  const targetElement = event.target;
+
+  if (targetElement.querySelector("#plus-icon") || targetElement.querySelector("#btn-new")) {
+    const icon = document.getElementById("plus-icon");
+    icon.classList.remove("fa-beat");
+    icon.style.color = "var(--black)";
   }
 });
