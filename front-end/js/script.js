@@ -34,7 +34,8 @@ var countTask = 0;
 // FUNÇÕES ------------------------------------
 setInterval(() => {
   showHeaderDate();
-  minInputDateValidation();
+  // minInputDateValidation();
+  checkDateLimitTask();
 }, 1000);
 
 /* Exibindo a data de hoje */
@@ -76,6 +77,44 @@ function dateFormatterToEdit(date) {
   let year = objDate.getFullYear();
 
   return year + '-' + month + '-' + day;
+}
+
+function checkDateLimitTask() {
+  const allToDo = document.querySelectorAll(".to-do-element-list");
+
+  allToDo.forEach((value) => {
+    let today = new Date();
+    today = dateFormatterToEdit(today);
+
+    let toDoAuxDate = new Date(value.getElementsByClassName("aux-date")[0].innerHTML);
+    toDoAuxDate = dateFormatterToEdit(toDoAuxDate);
+
+    let iconProgress = value.getElementsByClassName("progress")[0];
+
+    console.log(today);
+    console.log(toDoAuxDate);
+
+    if (today === toDoAuxDate) { // Para hoje
+      if (iconProgress.classList.contains("fa-spinner")) {
+        iconProgress.classList.remove("fa-spinner");
+        iconProgress.classList.add("fa-circle-exclamation");
+      }
+    } 
+    
+    if (today > toDoAuxDate) { // Atrasado
+      if (iconProgress.classList.contains("fa-spinner")) {
+        iconProgress.classList.remove("fa-spinner");
+        iconProgress.classList.add("fa-circle-xmark");
+      }
+    } 
+    
+    if (today < toDoAuxDate) { // No prazo
+      iconProgress.classList.remove("fa-circle-exclamation");
+      iconProgress.classList.remove("fa-circle-xmark");
+      iconProgress.classList.remove("fa-check");
+      iconProgress.classList.add("fa-spinner");
+    }
+  });
 }
 
 /* Modal de Adicionar tarefa */
@@ -285,6 +324,8 @@ document.addEventListener("click", (event) => {
 
     icon.classList.remove("fa-spinner");
     icon.classList.remove("fa-spinner-progress");
+    icon.classList.remove("fa-circle-exclamation")
+    icon.classList.remove("fa-circle-xmark");
     icon.classList.add("fa-circle-check");
 
     // parentElement.style.backgroundColor = "#8a8a8a";
@@ -329,7 +370,7 @@ document.addEventListener("click", (event) => {
     countTask--;
     countTaskFunc(countTask);
   }
-})
+});
 
 editForm.addEventListener("submit", (event) => {
   event.preventDefault();
