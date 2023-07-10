@@ -88,9 +88,10 @@ h1 {
 }
 
 #btn-turn-theme {
+  height: 29px;
   font-size: 1rem;
 
-  padding: 5px 10px;
+  padding: 5px 8px;
 
   border-radius: 5px;
 
@@ -109,8 +110,9 @@ h1 {
 }
 
 #btn-new {
+  height: 29px;
   color: var(--black);
-  padding: 5px 7px;
+  padding: 5px 8px;
 
   font-size: 0.8rem;
 

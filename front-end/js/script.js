@@ -91,9 +91,6 @@ function checkDateLimitTask() {
 
     let iconProgress = value.getElementsByClassName("progress")[0];
 
-    console.log(today);
-    console.log(toDoAuxDate);
-
     if (today === toDoAuxDate) { // Para hoje
       if (iconProgress.classList.contains("fa-spinner")) {
         iconProgress.classList.remove("fa-spinner");
