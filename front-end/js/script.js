@@ -44,7 +44,7 @@ function showHeaderDate () {
   
   let date = new Date();
   
-  currentDate.innerHTML = '<i class="fa-solid fa-calendar-days"></i>' + dateFormatter(date);
+  currentDate.innerHTML = '<i class="fa-regular fa-calendar-days"></i>' + dateFormatter(date);
 }
 
 /* Estabelecendo a data mínima para o input date */
@@ -383,22 +383,24 @@ editForm.addEventListener("submit", (event) => {
   }
 });
 
-// Botãao de thema
+// Botão de thema
 themeButton.addEventListener("mouseover", (event) => {
   const targetElement = event.target;
 
-  if (targetElement.querySelector("#sun-icon") || targetElement.querySelector("#btn-turn-theme")) {
+  if (targetElement.querySelector("#sun-icon")) {
     const icon = document.getElementById("sun-icon");
     icon.classList.add("fa-beat");
+    icon.style.color = "#fac400";
   }
 });
 
 themeButton.addEventListener("mouseleave", (event) => {
   const targetElement = event.target;
 
-  if (targetElement.querySelector("#sun-icon") || targetElement.querySelector("#btn-turn-theme")) {
+  if (targetElement.querySelector("#sun-icon")) {
     const icon = document.getElementById("sun-icon");
     icon.classList.remove("fa-beat");
+    icon.style.color = "#000000";
   }
 });
 
@@ -406,7 +408,7 @@ themeButton.addEventListener("mouseleave", (event) => {
 newButton.addEventListener("mouseover", (event) => {
   const targetElement = event.target;
 
-  if (targetElement.querySelector("#plus-icon") || targetElement.querySelector("#btn-new")) {
+  if (targetElement.querySelector("#plus-icon")) {
     const icon = document.getElementById("plus-icon");
     icon.classList.add("fa-beat");
     icon.style.color = "var(--complete-green-color)";
@@ -416,7 +418,7 @@ newButton.addEventListener("mouseover", (event) => {
 newButton.addEventListener("mouseleave", (event) => {
   const targetElement = event.target;
 
-  if (targetElement.querySelector("#plus-icon") || targetElement.querySelector("#btn-new")) {
+  if (targetElement.querySelector("#plus-icon")) {
     const icon = document.getElementById("plus-icon");
     icon.classList.remove("fa-beat");
     icon.style.color = "var(--black)";
