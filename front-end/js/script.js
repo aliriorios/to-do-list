@@ -34,7 +34,7 @@ var countTask = 0;
 // FUNÇÕES ------------------------------------
 setInterval(() => {
   showHeaderDate();
-  // minInputDateValidation();
+  minInputDateValidation();
   checkDateLimitTask();
 }, 1000);
 
@@ -96,20 +96,19 @@ function checkDateLimitTask() {
         iconProgress.classList.remove("fa-spinner");
         iconProgress.classList.add("fa-circle-exclamation");
       }
-    } 
-    
-    if (today > toDoAuxDate) { // Atrasado
+
+    } else if (today > toDoAuxDate) { // Atrasado
       if (iconProgress.classList.contains("fa-spinner")) {
         iconProgress.classList.remove("fa-spinner");
         iconProgress.classList.add("fa-circle-xmark");
       }
-    } 
-    
-    if (today < toDoAuxDate) { // No prazo
-      iconProgress.classList.remove("fa-circle-exclamation");
-      iconProgress.classList.remove("fa-circle-xmark");
-      iconProgress.classList.remove("fa-check");
-      iconProgress.classList.add("fa-spinner");
+
+    } else {
+      if (!iconProgress.classList.contains("fa-circle-check")) {
+        iconProgress.classList.remove("fa-circle-exclamation");
+        iconProgress.classList.remove("fa-circle-xmark");
+        iconProgress.classList.add("fa-spinner");
+      }
     }
   });
 }
