@@ -387,8 +387,8 @@ editForm.addEventListener("submit", (event) => {
 themeButton.addEventListener("mouseover", (event) => {
   const targetElement = event.target;
 
-  if (targetElement.querySelector("#sun-icon")) {
-    const icon = document.getElementById("sun-icon");
+  if (targetElement.querySelector("#theme-icon")) {
+    const icon = document.getElementById("theme-icon");
     icon.classList.add("fa-beat");
     icon.style.color = "#fac400";
   }
@@ -397,8 +397,8 @@ themeButton.addEventListener("mouseover", (event) => {
 themeButton.addEventListener("mouseleave", (event) => {
   const targetElement = event.target;
 
-  if (targetElement.querySelector("#sun-icon")) {
-    const icon = document.getElementById("sun-icon");
+  if (targetElement.querySelector("#theme-icon")) {
+    const icon = document.getElementById("theme-icon");
     icon.classList.remove("fa-beat");
     icon.style.color = "#000000";
   }
