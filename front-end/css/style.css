@@ -13,9 +13,9 @@
   --bg-white: #FFFFFF;
 
   /* Dark Theme */
-  --bg-ligh-dark: #636262;
-  --bg-medium-dark: #3b3b3b;
-  --bg-strong-dark: #0F1014;
+  --bg-ligh-dark: #9b9b9b;
+  --bg-medium-dark: #424242;
+  --bg-strong-dark: #2f3030;
 
   /* Text */
   --black: #000000;
@@ -43,6 +43,69 @@ body {
   height: 100vh;
 
   overflow: hidden;
+  transition: 0.3s;
+}
+
+/* Dark theme ---------------------------------- */
+.dark,
+.dark #theme-icon,
+.dark #btn-new,
+.dark .modal,
+.dark .btn-cross-modal {
+  color: var(--bg-white);
+}
+
+.dark .to-do-container,
+.dark .modal {
+  background: var(--bg-strong-dark);
+}
+
+.dark .to-do-element-list,
+.dark .btn-header,
+.dark .btn-cross-modal {
+  background: var(--bg-medium-dark);
+}
+
+.dark .btn-element-to-do {
+  color: var(--bg-white);
+  background: var(--bg-strong-dark);
+}
+
+.dark .btn-header:hover,
+.dark .btn-element-to-do:hover,
+.dark .btn-cross-modal:hover,
+.dark #btn-form-submit:hover,
+.dark #edit-form-submit:hover {
+  background-color: var(--bg-ligh-dark);
+}
+
+.dark #without-task {
+  color: rgba(255, 255, 255, 0.5);;
+}
+
+/* Modal dark */
+.dark .btn-disable,
+.dark .inProgress {
+  background: var(--bg-ligh-dark);
+}
+
+.dark .field-todo input,
+.dark .field-todo textarea,
+.dark .input-time {
+  color: var(--bg-white);
+  background: var(--bg-light-dark);
+  border: 1px solid var(--bg-medium-dark);
+}
+
+.dark input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(100%) sepia(100%) saturate(13%) hue-rotate(237deg) brightness(104%) contrast(104%);
+}
+
+.dark #btn-form-submit,
+.dark #edit-form-submit {
+  color: var(--bg-white);
+  background: var(--bg-medium-dark);
 }
 
 #head-container {
@@ -63,8 +126,6 @@ body {
 h1 {
   font-size: 0.8rem;
 
-  color: var(--black);
-
   display: inline;
 }
 
@@ -83,51 +144,40 @@ h1 {
   border-radius: 5px;
 }
 
-#btn-turn-theme {
-  height: 29px;
-  font-size: 1rem;
-
-  padding: 5px 8px;
-
-  border-radius: 5px;
-
-  color: var(--black);
-  background-color: var(--bg-ligh-theme);
-
-  transition: color, 0.3s;
-}
-
 /* NEW BUTTON */
 #plus-icon {
   margin-right: 5px;
 
-  font-style: normal;
   font-size: 1rem;
 }
 
 #btn-new {
-  height: 29px;
-  color: var(--black);
   padding: 5px 8px;
+}
 
+#btn-turn-theme {
+  font-size: 1rem;
+  width: 30px;
+  align-items: center;
+}
+
+.btn-header {
+  height: 29px;
+  
   font-size: 0.8rem;
-
   border-radius: 5px;
-
   background-color: var(--bg-ligh-theme);
-
   transition: color, 0.3s;
 }
 
-#btn-turn-theme:hover,
-#btn-new:hover,
+.btn-header:hover,
 .btn-cross-modal:hover {
   background-color: var(--bg-medium-theme);
   cursor: pointer;
 }
 
 /* TO DO CONTAINER */
-#to-do-container {
+.to-do-container {
   background: var(--bg-white);
 
   margin: 70px auto;
@@ -209,7 +259,6 @@ h1 {
 }
 
 .btn-element-to-do {
-  color: var(--black);
   font-size: 0.7rem;
 
   padding: 4px 8px;
@@ -255,7 +304,6 @@ h1 {
 
   text-align: center;
   font-size: 0.7rem;
-  color: var(--black);
 
   border-radius: 0px 0px 8px 8px;
   background-color: var(--bg-ligh-theme);
@@ -279,7 +327,6 @@ h1 {
 
   border-radius: 10px;
 
-  color: var(--black);
   background-color: var(--bg-white);
 
   position: absolute;
@@ -300,7 +347,6 @@ h1 {
   padding: 5px 10px;
   border-radius: 10px;
 
-  color: var(--black);
   background-color: var(--bg-ligh-theme);
 
   transition: color, 0.3s;
@@ -332,7 +378,6 @@ fieldset>label {
   border-radius: 10px;
 
   font-size: 0.7rem;
-  color: var(--black);
   background: var(--bg-ligh-theme);
   outline: 0;
 }
@@ -365,7 +410,6 @@ fieldset>label {
   outline: none;
 
   font-size: 0.7rem;
-  color: var(--black);
 
   background-color: var(--bg-ligh-theme);
 }
@@ -385,7 +429,6 @@ fieldset>label {
   margin-top: 20px;
   margin-left: 38px;
 
-  color: var(--black);
   background-color: var(--bg-ligh-theme);
 
   font-size: 0.8rem;
@@ -397,7 +440,6 @@ fieldset>label {
 
 #btn-form-submit:hover,
 #edit-form-submit:hover {
-  color: var(--black);
   background-color: var(--bg-medium-theme);
   cursor: pointer;
 }
@@ -411,14 +453,7 @@ fieldset>label {
   margin-top: 15px;
 
   font-size: 0.8rem;
-  color: var(--black);
 }
-
-/* #btn-form-submit:hover {
-  color: white;
-  background-color: var(--text-light-grey);
-  cursor: pointer;
-} */
 
 /* BUTTON DISABLE --------------------- */
 .btn-disable {

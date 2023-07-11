@@ -390,7 +390,6 @@ themeButton.addEventListener("mouseover", (event) => {
   if (targetElement.querySelector("#theme-icon")) {
     const icon = document.getElementById("theme-icon");
     icon.classList.add("fa-beat");
-    icon.style.color = "#fac400";
   }
 });
 
@@ -400,8 +399,14 @@ themeButton.addEventListener("mouseleave", (event) => {
   if (targetElement.querySelector("#theme-icon")) {
     const icon = document.getElementById("theme-icon");
     icon.classList.remove("fa-beat");
-    icon.style.color = "#000000";
   }
+});
+
+themeButton.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+
+  const icon = document.getElementById("theme-icon");
+  icon.classList.toggle("fa-moon");
 });
 
 // Botão de nova tarefa
@@ -411,7 +416,6 @@ newButton.addEventListener("mouseover", (event) => {
   if (targetElement.querySelector("#plus-icon")) {
     const icon = document.getElementById("plus-icon");
     icon.classList.add("fa-beat");
-    icon.style.color = "var(--complete-green-color)";
   }
 });
 
@@ -421,6 +425,5 @@ newButton.addEventListener("mouseleave", (event) => {
   if (targetElement.querySelector("#plus-icon")) {
     const icon = document.getElementById("plus-icon");
     icon.classList.remove("fa-beat");
-    icon.style.color = "var(--black)";
   }
 });

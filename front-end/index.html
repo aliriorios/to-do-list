@@ -23,14 +23,14 @@
 </head>
 
 <body>
-  <div id="to-do-container">
+  <div id="to-do-container" class="to-do-container">
     <header id="head-container">
       <h1>Lista de Tarefas</h1>
 
       <div id="hdr-date-btn">
         <p id="current-date"></i></p>
-        <button id="btn-turn-theme"><i id="theme-icon" class="fa-regular fa-sun"></i></button>
-        <button id="btn-new"><i id="plus-icon" class="fa-regular fa-plus"></i>New</button>
+        <button id="btn-turn-theme" class="btn-header"><i id="theme-icon" class="fa-solid fa-sun"></i></button>
+        <button id="btn-new" class="btn-header"><i id="plus-icon" class="fa-regular fa-plus"></i>New</button>
       </div>
     </header>
     <i class="fa-solid fa-brightness-low"></i>
@@ -49,7 +49,7 @@
       <form id="add-form-todo" class="add-form" method="post">
         <fieldset class="field-todo">
           <label for="add-input">Nome da Tarefa</label>
-          <input type="text" id="add-input" class="txt-add-input" placeholder="Insira o nome da tarefa" autofocus required>
+          <input type="text" id="add-input" class="txt-add-input" placeholder="Insira o nome da tarefa" autofocus required autocomplete="off">
         </fieldset>
 
         <fieldset class="field-todo">
@@ -87,7 +87,7 @@
       <form id="edit-form-todo" class="add-form" method="post">
         <fieldset class="field-todo">
           <label for="edit-input">Nome da Tarefa</label>
-          <input type="text" id="edit-input" class="txt-add-input" placeholder="Insira o nome da tarefa" autofocus required>
+          <input type="text" id="edit-input" class="txt-add-input" placeholder="Insira o nome da tarefa" autofocus required autocomplete="off">
         </fieldset>
 
         <fieldset class="field-todo">
