@@ -31,6 +31,9 @@ let taskElementAuxDate;
 /* Contadora de tarefas */
 var countTask = 0;
 
+// CHAMADAS DE FUNÇÃO AO RENDERIZAR O WEB
+loadThemePreference();
+
 // FUNÇÕES ------------------------------------
 setInterval(() => {
   showHeaderDate();
@@ -259,6 +262,21 @@ function countTaskFunc(countTask) {
   }
 }
 
+function toggleDarkMode () {
+  document.body.classList.toggle("dark");
+
+  const icon = document.getElementById("theme-icon");
+  icon.classList.toggle("fa-moon");
+}
+
+function loadThemePreference () {
+  const darkMode = localStorage.getItem("dark");
+
+  if (darkMode) {
+    toggleDarkMode ();
+  }
+}
+
 // EVENTOS ------------------------------------
 /* Pegandos os dados da tarefa para criar o elemento HTML*/
 toDoModalForm.addEventListener("submit", (event) => {
@@ -403,10 +421,14 @@ themeButton.addEventListener("mouseleave", (event) => {
 });
 
 themeButton.addEventListener("click", () => {
-  document.body.classList.toggle("dark");
+  toggleDarkMode();
 
-  const icon = document.getElementById("theme-icon");
-  icon.classList.toggle("fa-moon");
+  // Save or Remove dark theme preference in LocalStorage
+  localStorage.removeItem("dark");
+
+  if (document.body.classList.contains("dark")) {
+    localStorage.setItem("dark", 1);
+  }
 });
 
 // Botão de nova tarefa
