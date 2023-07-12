@@ -22,10 +22,8 @@ let editDate = document.getElementById("edit-input-time-final");
 
 const toDoList = document.getElementById("to-do-list");
 
-let taskElementName;
-let taskElementDetails;
-let taskElementDate;
-let taskElementAuxDate;
+/* Objeto auxiliar para informações de edição */
+let auxTask = {};
 
 // VARIÁVEL DE UTILIDADE
 /* Contadora de tarefas */
@@ -146,6 +144,13 @@ function btnEnable(btn) {
 
 // Essa função vai criar elementos HTML para parecer que está salvando
 const saveToDo = (name, detail, date) => {
+  /* Objeto JS para usar em JSON no Spring */
+  const task = {
+    taskName : name,
+    taskDetail : detail,
+    taskDate : date
+  }
+
   /* Criando o card */
   const toDoCard = document.createElement("div");
   toDoCard.classList.add("to-do-element-list");
@@ -165,7 +170,7 @@ const saveToDo = (name, detail, date) => {
   iconProgress.className += " progress";
 
   const toDoTitle = document.createElement("p");
-  toDoTitle.innerText = name;
+  toDoTitle.innerText = task.taskName;
   toDoTitle.className = "to-do-title";
 
   toDoHead.appendChild(iconGrip);
@@ -175,7 +180,7 @@ const saveToDo = (name, detail, date) => {
 
   /* Criando o details */
   const toDoDetail = document.createElement("div");
-  toDoDetail.innerText = detail;
+  toDoDetail.innerText = task.taskDetail;
   toDoDetail.classList.add("txt-details");
   toDoCard.appendChild(toDoDetail);
 
@@ -185,11 +190,11 @@ const saveToDo = (name, detail, date) => {
 
   /* Auxiliar para guardar o valor do date antes de converter */
   const auxDate = document.createElement("span");
-  auxDate.innerText = date;
+  auxDate.innerText = task.taskDate;
   auxDate.classList.add("aux-date");
 
   const toDoDate = document.createElement("span");
-  toDoDate.innerText = dateFormatter(date);
+  toDoDate.innerText = dateFormatter(task.taskDate);
   toDoDate.classList.add("to-date");
 
   const btnStart = document.createElement("button");
@@ -242,7 +247,7 @@ const updateToDo = (name, details, date) =>{
     let toDoDateInput = value.querySelector(".to-date");
     let toDoAuxDate = value.querySelector(".aux-date");
 
-    if (toDoNameNameInput.innerText === taskElementName) {
+    if (toDoNameNameInput.innerText === auxTask.name) {
       toDoNameNameInput.innerText = name;
       toDoDetailInput.innerText = details;
       toDoDateInput.innerText = dateFormatter(date);
@@ -282,18 +287,17 @@ function loadThemePreference () {
 toDoModalForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const inputName = toDoModalinputName.value;
-  const inputDetail = toDoModalinputDetail.value;
-
-  /*
-  A informação do input date está chegando com 1 dia a menos!
-  Não Sei se é um problema comum do input!
-  */
   const inputDate = new Date(toDoModalinputDate.value);
-  inputDate.setDate(inputDate.getDate() + 1); // Resolução do Day -1
+  inputDate.setDate(inputDate.getDate() + 1); // valor do dia está vindo -1
 
-  if (inputName && inputDate) {
-    saveToDo(inputName, inputDetail, inputDate);
+  const task = {
+    name : toDoModalinputName.value,
+    detail : toDoModalinputDetail.value,
+    date : inputDate
+  }
+
+  if (task.name && task.date) {
+    saveToDo(task.name, task.detail, task.date);
 
     countTask++;
     countTaskFunc(countTask);
@@ -301,7 +305,6 @@ toDoModalForm.addEventListener("submit", (event) => {
   }
 })
 
-// UTILIDADE ------------------------------------
 /* Mapeando os buttons das tarefas */
 document.addEventListener("click", (event) => {
   const targetElement = event.target;
@@ -351,28 +354,32 @@ document.addEventListener("click", (event) => {
 
   /* Abrir o modal que exibe toda a tarefa */
   if (targetElement.classList.contains("to-do-element-list")) {
-    taskElementName = parentElement.getElementsByClassName("to-do-title")[0].innerHTML;
-    taskElementDetails = parentElement.getElementsByClassName("txt-details")[0].innerHTML;
-    taskElementDate = parentElement.getElementsByClassName("to-date")[0].innerHTML;
+    auxTask = {
+      name : parentElement.getElementsByClassName("to-do-title")[0].innerHTML,
+      details : parentElement.getElementsByClassName("txt-details")[0].innerHTML,
+      date : parentElement.getElementsByClassName("to-date")[0].innerHTML
+    }
 
     // Exibindo!
-    document.getElementById("show-name").innerText = taskElementName;
-    document.getElementById("details-area").innerText = taskElementDetails;
-    document.getElementById("show-date").innerText = 'Para: ' + taskElementDate;
+    document.getElementById("show-name").innerText = auxTask.name;
+    document.getElementById("details-area").innerText = auxTask.details;
+    document.getElementById("show-date").innerText = 'Para: ' + auxTask.date;
     showTaskModal.showModal(); // Abrindo o modal
   }
 
   /* Abrir modal de editar */
   if (targetElement.classList.contains("edit")) {
-    taskElementName = parentElement.getElementsByClassName("to-do-title")[0].innerHTML;
-    taskElementDetails = parentElement.getElementsByClassName("txt-details")[0].innerHTML;
-    taskElementDate = parentElement.getElementsByClassName("to-date")[0].innerHTML;
-    taskElementAuxDate = parentElement.getElementsByClassName("aux-date")[0].innerHTML;
+    auxTask = {
+      name : parentElement.getElementsByClassName("to-do-title")[0].innerHTML,
+      details : parentElement.getElementsByClassName("txt-details")[0].innerHTML,
+      date : parentElement.getElementsByClassName("to-date")[0].innerHTML,
+      auxDate : parentElement.getElementsByClassName("aux-date")[0].innerHTML
+    }
 
     // Exibindo
-    editName.value = taskElementName;
-    editDetails.value = taskElementDetails;
-    editDate.value = dateFormatterToEdit(taskElementAuxDate);
+    editName.value = auxTask.name;
+    editDetails.value = auxTask.details;
+    editDate.value = dateFormatterToEdit(auxTask.date);
 
     editModal.showModal();
   }
@@ -386,17 +393,22 @@ document.addEventListener("click", (event) => {
   }
 });
 
+/* Modal de edição */
 editForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const newInputName = editName.value;
-  const newInputDetails = editDetails.value;
-  const newInputDate = new Date(editDate.value);
-  newInputDate.setDate(newInputDate.getDate() + 1);
+  const inputDate = new Date(editDate.value);
+  inputDate.setDate(inputDate.getDate() + 1);
 
-  if (newInputName && newInputDate) {
+  const task = {
+    name : editName.value,
+    details : editDetails.value,
+    date : inputDate
+  }
+  
+  if (task.name && task.date) {
     // Atualizar
-    updateToDo(newInputName, newInputDetails, newInputDate);
+    updateToDo(task.name, task.details, task.date);
     editModal.close();
   }
 });
