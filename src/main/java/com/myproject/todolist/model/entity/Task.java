@@ -1,5 +1,6 @@
 package com.myproject.todolist.model.entity;
 
+import com.myproject.todolist.model.entity.enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -29,4 +30,18 @@ public class Task implements Serializable {
     private String description;
 
     private LocalDate delivery;
+
+    //enum
+    private Integer taskStatus;
+
+    //custom getter and setter to TaskStatus enum
+    public TaskStatus getTaskStatus() {
+        return TaskStatus.convertCode(taskStatus);
+    }
+    
+    public void setTaskStatus (TaskStatus taskStatus) {
+        if (taskStatus != null) {
+            this.taskStatus = taskStatus.getCode();
+        }
+    }
 }
