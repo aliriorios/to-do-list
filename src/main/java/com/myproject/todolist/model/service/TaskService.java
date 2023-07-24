@@ -49,12 +49,11 @@ public class TaskService {
         }
     }
 
-    /* ERRO XXXXXXXXXXXXXXXXXXXXXXXXX*/
     public Task update (Long id, Task task) {
         try {
-            Task entity = taskRepository.getReferenceById(id); //get the reference of id entity
-            updateData(entity, task); //update 'entity' with values of 'task'
-            return taskRepository.save(entity);
+            Optional<Task> entity = taskRepository.findById(id); //get the reference of id entity
+            updateData(entity.get(), task); //update 'entity' with values of 'task'
+            return taskRepository.save(entity.get());
 
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(id);
