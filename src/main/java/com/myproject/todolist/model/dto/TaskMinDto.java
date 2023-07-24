@@ -24,7 +24,7 @@ public class TaskMinDto implements Serializable {
     private String title;
     private LocalDate delivery;
     private Integer taskStatus;
-    
+
     //constructor
     public TaskMinDto (Task task) {
         BeanUtils.copyProperties(task, this);
