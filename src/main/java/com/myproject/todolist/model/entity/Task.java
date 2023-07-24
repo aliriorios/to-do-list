@@ -10,6 +10,7 @@ import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tasks")
@@ -42,7 +43,8 @@ public class Task implements Serializable {
         this.title = title;
         this.description = description;
         this.delivery = delivery;
-        setTaskStatus(taskStatus);
+
+        setTaskStatus(Objects.requireNonNullElse(taskStatus, TaskStatus.DEFAULT));
     }
 
     //custom getter and setter to TaskStatus enum

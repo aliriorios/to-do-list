@@ -379,7 +379,7 @@ document.addEventListener("click", (event) => {
     // Exibindo
     editName.value = auxTask.name;
     editDetails.value = auxTask.details;
-    editDate.value = dateFormatterToEdit(auxTask.date);
+    editDate.value = dateFormatterToEdit(auxTask.auxDate);
 
     editModal.showModal();
   }

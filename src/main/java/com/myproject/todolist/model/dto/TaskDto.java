@@ -1,11 +1,11 @@
 package com.myproject.todolist.model.dto;
 
 import com.myproject.todolist.model.entity.Task;
+import com.myproject.todolist.model.entity.enums.TaskStatus;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.BeanUtils;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -28,6 +28,21 @@ public class TaskDto implements Serializable {
 
     //constructor
     public TaskDto(Task task) {
-        BeanUtils.copyProperties(task, this);
+        this.id = task.getId();
+        this.title = task.getTitle();
+        this.description = task.getDescription();
+        this.delivery = task.getDelivery();
+        setTaskStatus(task.getTaskStatus());
+    }
+
+    //custom getter and setter to TaskStatus enum
+    public TaskStatus getTaskStatus() {
+        return TaskStatus.convertCode(taskStatus);
+    }
+
+    public void setTaskStatus (TaskStatus taskStatus) {
+        if (taskStatus != null) {
+            this.taskStatus = taskStatus.getCode();
+        }
     }
 }
