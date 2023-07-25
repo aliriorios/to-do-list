@@ -32,258 +32,8 @@ var countTask = 0;
 // CHAMADAS DE FUNÇÃO AO RENDERIZAR O WEB
 loadThemePreference();
 
-// FUNÇÕES ------------------------------------
-setInterval(() => {
-  showHeaderDate();
-  minInputDateValidation();
-  checkDateLimitTask();
-}, 1000);
-
-/* Exibindo a data de hoje */
-function showHeaderDate () {
-  const currentDate = document.getElementById("current-date");
-  
-  let date = new Date();
-  
-  currentDate.innerHTML = '<i class="fa-regular fa-calendar-days"></i>' + dateFormatter(date);
-}
-
-/* Estabelecendo a data mínima para o input date */
-function minInputDateValidation () {
-  let currentDate = new Date();
-
-  let day = currentDate.getDate() < 10 ? '0' + currentDate.getDate() : currentDate.getDate();
-  let month = (currentDate.getMonth() + 1) < 10 ? '0' + (currentDate.getMonth() + 1) : (currentDate.getMonth() + 1);
-  let year = currentDate.getFullYear();
-
-  currentDate = year + '-' + month + '-' + day;
-  document.getElementById("add-input-time-final").setAttribute("min", currentDate);
-  document.getElementById("edit-input-time-final").setAttribute("min", currentDate);
-}
-
-function dateFormatter(date) {
-  let monName = new Array("Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez");
-  let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
-
-  let formatter = day + " " + monName[date.getMonth()] + " " + date.getFullYear();
-
-  return formatter;
-}
-
-function dateFormatterToEdit(date) {
-  let objDate = new Date(date);
-
-  let day = objDate.getDate() < 10 ? '0' + objDate.getDate() : objDate.getDate();
-  let month = (objDate.getMonth() + 1) < 10 ? '0' + (objDate.getMonth() + 1) : (objDate.getMonth() + 1);
-  let year = objDate.getFullYear();
-
-  return year + '-' + month + '-' + day;
-}
-
-function checkDateLimitTask() {
-  const allToDo = document.querySelectorAll(".to-do-element-list");
-
-  allToDo.forEach((value) => {
-    let today = new Date();
-    today = dateFormatterToEdit(today);
-
-    let toDoAuxDate = new Date(value.getElementsByClassName("aux-date")[0].innerHTML);
-    toDoAuxDate = dateFormatterToEdit(toDoAuxDate);
-
-    let iconProgress = value.getElementsByClassName("progress")[0];
-
-    if (today === toDoAuxDate) { // Para hoje
-      if (iconProgress.classList.contains("fa-spinner")) {
-        iconProgress.classList.remove("fa-spinner");
-        iconProgress.classList.add("fa-circle-exclamation");
-      }
-
-    } else if (today > toDoAuxDate) { // Atrasado
-      if (iconProgress.classList.contains("fa-spinner")) {
-        iconProgress.classList.remove("fa-spinner");
-        iconProgress.classList.add("fa-circle-xmark");
-      }
-
-    } else {
-      if (!iconProgress.classList.contains("fa-circle-check")) {
-        iconProgress.classList.remove("fa-circle-exclamation");
-        iconProgress.classList.remove("fa-circle-xmark");
-        iconProgress.classList.add("fa-spinner");
-      }
-    }
-  });
-}
-
-/* Modal de Adicionar tarefa */
-newButton.onclick = () => {
-  addModal.showModal();
-}
-
-closeButtonAdd.onclick = () => {
-  addModal.close();
-}
-
-closeButtonShow.onclick = () => {
-  showTaskModal.close();
-}
-
-closeButtonEdit.onclick = () => {
-  editModal.close();
-}
-
-/* Trocando permissão de botões */
-function btnDisable(btn) {
-  btn.classList.add("btn-disable");
-  btn.setAttribute("disabled", "true");
-}
-
-function btnEnable(btn) {
-  btn.classList.remove("btn-disable");
-  btn.setAttribute("disabled", "false");
-}
-
-// Essa função vai criar elementos HTML para parecer que está salvando
-const saveToDo = (name, detail, date) => {
-  /* Objeto JS para usar em JSON no Spring */
-  const task = {
-    taskName : name,
-    taskDetail : detail,
-    taskDate : date
-  }
-
-  /* Criando o card */
-  const toDoCard = document.createElement("div");
-  toDoCard.classList.add("to-do-element-list");
-
-  /* Criando o head do card */
-  const toDoHead = document.createElement("div");
-  toDoHead.classList.add("head-element");
-
-  const iconGrip = document.createElement("i");
-  iconGrip.classList.add("fa-solid");
-  iconGrip.className += " fa-grip-vertical";
-
-  const iconProgress = document.createElement("i");
-
-  iconProgress.classList.add("fa-solid");
-  iconProgress.className += " fa-spinner";
-  iconProgress.className += " progress";
-
-  const toDoTitle = document.createElement("p");
-  toDoTitle.innerText = task.taskName;
-  toDoTitle.className = "to-do-title";
-
-  toDoHead.appendChild(iconGrip);
-  toDoHead.appendChild(iconProgress);
-  toDoHead.appendChild(toDoTitle);
-  toDoCard.appendChild(toDoHead);
-
-  /* Criando o details */
-  const toDoDetail = document.createElement("div");
-  toDoDetail.innerText = task.taskDetail;
-  toDoDetail.classList.add("txt-details");
-  toDoCard.appendChild(toDoDetail);
-
-  /* Criando o container dos buttons */
-  const toDoButtonContainer = document.createElement("div");
-  toDoButtonContainer.setAttribute("id", "to-do-element-btn-container");
-
-  /* Auxiliar para guardar o valor do date antes de converter */
-  const auxDate = document.createElement("span");
-  auxDate.innerText = task.taskDate;
-  auxDate.classList.add("aux-date");
-
-  const toDoDate = document.createElement("span");
-  toDoDate.innerText = dateFormatter(task.taskDate);
-  toDoDate.classList.add("to-date");
-
-  const btnStart = document.createElement("button");
-  btnStart.classList.add("btn-element-to-do");
-  btnStart.className += " start";
-  btnStart.innerHTML = '<i class="fa-solid fa-play"></i>Iniciar';
-
-  const btnConclude = document.createElement("button");
-  btnConclude.setAttribute("id", "btn-element-conclude");
-  btnConclude.classList.add("btn-element-to-do");
-  btnConclude.className += " conclude";
-  btnConclude.innerHTML = '<i class="fa-solid fa-check"></i>Concluir';
-
-  const btnEdit = document.createElement("button");
-  btnEdit.setAttribute("id", "btn-element-edit");
-  btnEdit.classList.add("btn-element-to-do");
-  btnEdit.className += " edit";
-  btnEdit.innerHTML = '<i class="fa-solid fa-pen"></i>Editar';
-
-  const btnTrash = document.createElement("button");
-  btnTrash.setAttribute("id", "btn-element-trash");
-  btnTrash.classList.add("btn-element-to-do");
-  btnTrash.className += " trash";
-  btnTrash.innerHTML = '<i class="fa-solid fa-trash"></i>';
-
-  toDoButtonContainer.appendChild(toDoDate);
-  toDoButtonContainer.appendChild(btnStart);
-  toDoButtonContainer.appendChild(btnConclude);
-  toDoButtonContainer.appendChild(btnEdit);
-  toDoButtonContainer.appendChild(btnTrash);
-  toDoButtonContainer.appendChild(auxDate);
-  toDoCard.appendChild(toDoButtonContainer);
-
-  /* Adicionando toda a criação no HTML */
-  toDoList.appendChild(toDoCard);
-
-  toDoModalinputName.value = "";
-  toDoModalinputDetail.value = "";
-  toDoModalinputDate.value = "";
-}
-
-/* Atualizando os dados da edição */
-const updateToDo = (name, details, date) =>{
-  const allToDo = document.querySelectorAll(".to-do-element-list");
-
-  allToDo.forEach((value) => {
-    /* Vou utilizar o nome como IDENTIFICADOR */
-    let toDoNameNameInput = value.querySelector(".to-do-title");
-    let toDoDetailInput = value.querySelector(".txt-details");
-    let toDoDateInput = value.querySelector(".to-date");
-    let toDoAuxDate = value.querySelector(".aux-date");
-
-    if (toDoNameNameInput.innerText === auxTask.name) {
-      toDoNameNameInput.innerText = name;
-      toDoDetailInput.innerText = details;
-      toDoDateInput.innerText = dateFormatter(date);
-      toDoAuxDate.innerText = date;
-    }
-  });
-}
-
-function countTaskFunc(countTask) {
-  const withouTask = document.getElementById("without-task");
-
-  if (countTask > 0) {
-    withouTask.style.display = "none";
-
-  } else {
-    withouTask.style.display = "block";
-  }
-}
-
-function toggleDarkMode () {
-  document.body.classList.toggle("dark");
-
-  const icon = document.getElementById("theme-icon");
-  icon.classList.toggle("fa-moon");
-}
-
-function loadThemePreference () {
-  const darkMode = localStorage.getItem("dark");
-
-  if (darkMode) {
-    toggleDarkMode ();
-  }
-}
-
 // EVENTOS ------------------------------------
-/* Pegandos os dados da tarefa para criar o elemento HTML*/
+/* Pegandos os dados e salvando pela API */
 toDoModalForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
@@ -291,16 +41,18 @@ toDoModalForm.addEventListener("submit", (event) => {
   inputDate.setDate(inputDate.getDate() + 1); // valor do dia está vindo -1
 
   const task = {
-    name : toDoModalinputName.value,
-    detail : toDoModalinputDetail.value,
-    date : inputDate
+    title : toDoModalinputName.value,
+    description : toDoModalinputDetail.value,
+    delivery : inputDate,
+    taskStatus : "DEFAULT"
   }
 
-  if (task.name && task.date) {
-    saveToDo(task.name, task.detail, task.date);
+  if (task.title && task.delivery) {
+    save(task);
 
     countTask++;
     countTaskFunc(countTask);
+    clearInput();
     addModal.close();
   }
 })
@@ -461,3 +213,276 @@ newButton.addEventListener("mouseleave", (event) => {
     icon.classList.remove("fa-beat");
   }
 });
+
+// FUNÇÕES ------------------------------------
+setInterval(() => {
+  showHeaderDate();
+  minInputDateValidation();
+  checkDateLimitTask();
+}, 1000);
+
+/* Exibindo a data de hoje */
+function showHeaderDate () {
+  const currentDate = document.getElementById("current-date");
+  
+  let date = new Date();
+  
+  currentDate.innerHTML = '<i class="fa-regular fa-calendar-days"></i>' + dateFormatter(date);
+}
+
+/* Estabelecendo a data mínima para o input date */
+function minInputDateValidation () {
+  let currentDate = new Date();
+
+  let day = currentDate.getDate() < 10 ? '0' + currentDate.getDate() : currentDate.getDate();
+  let month = (currentDate.getMonth() + 1) < 10 ? '0' + (currentDate.getMonth() + 1) : (currentDate.getMonth() + 1);
+  let year = currentDate.getFullYear();
+
+  currentDate = year + '-' + month + '-' + day;
+  document.getElementById("add-input-time-final").setAttribute("min", currentDate);
+  document.getElementById("edit-input-time-final").setAttribute("min", currentDate);
+}
+
+function dateFormatter(date) {
+  let monName = new Array("Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez");
+  let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+
+  let formatter = day + " " + monName[date.getMonth()] + " " + date.getFullYear();
+
+  return formatter;
+}
+
+function dateFormatterToEdit(date) {
+  let objDate = new Date(date);
+
+  let day = objDate.getDate() < 10 ? '0' + objDate.getDate() : objDate.getDate();
+  let month = (objDate.getMonth() + 1) < 10 ? '0' + (objDate.getMonth() + 1) : (objDate.getMonth() + 1);
+  let year = objDate.getFullYear();
+
+  return year + '-' + month + '-' + day;
+}
+
+function checkDateLimitTask() {
+  const allToDo = document.querySelectorAll(".to-do-element-list");
+
+  allToDo.forEach((value) => {
+    let today = new Date();
+    today = dateFormatterToEdit(today);
+
+    let toDoAuxDate = new Date(value.getElementsByClassName("aux-date")[0].innerHTML);
+    toDoAuxDate = dateFormatterToEdit(toDoAuxDate);
+
+    let iconProgress = value.getElementsByClassName("progress")[0];
+
+    if (today === toDoAuxDate) { // Para hoje
+      if (iconProgress.classList.contains("fa-spinner")) {
+        iconProgress.classList.remove("fa-spinner");
+        iconProgress.classList.add("fa-circle-exclamation");
+      }
+
+    } else if (today > toDoAuxDate) { // Atrasado
+      if (iconProgress.classList.contains("fa-spinner")) {
+        iconProgress.classList.remove("fa-spinner");
+        iconProgress.classList.add("fa-circle-xmark");
+      }
+
+    } else {
+      if (!iconProgress.classList.contains("fa-circle-check")) {
+        iconProgress.classList.remove("fa-circle-exclamation");
+        iconProgress.classList.remove("fa-circle-xmark");
+        iconProgress.classList.add("fa-spinner");
+      }
+    }
+  });
+}
+
+/* Modal de Adicionar tarefa */
+newButton.onclick = () => {
+  addModal.showModal();
+}
+
+closeButtonAdd.onclick = () => {
+  addModal.close();
+}
+
+closeButtonShow.onclick = () => {
+  showTaskModal.close();
+}
+
+closeButtonEdit.onclick = () => {
+  editModal.close();
+}
+
+/* Trocando permissão de botões */
+function btnDisable(btn) {
+  btn.classList.add("btn-disable");
+  btn.setAttribute("disabled", "true");
+}
+
+function btnEnable(btn) {
+  btn.classList.remove("btn-disable");
+  btn.setAttribute("disabled", "false");
+}
+
+function clearInput() {
+  toDoModalinputName.value = "";
+  toDoModalinputDetail.value = "";
+  toDoModalinputDate.value = "";
+}
+
+// Essa função vai criar as tarefas HTML
+const createToDoCard = (name, detail, date) => {
+  /* Objeto JS para usar em JSON no Spring */
+  const task = {
+    taskName : name,
+    taskDetail : detail,
+    taskDate : date
+  }
+
+  /* Criando o card */
+  const toDoCard = document.createElement("div");
+  toDoCard.classList.add("to-do-element-list");
+
+  /* Criando o head do card */
+  const toDoHead = document.createElement("div");
+  toDoHead.classList.add("head-element");
+
+  const iconGrip = document.createElement("i");
+  iconGrip.classList.add("fa-solid");
+  iconGrip.className += " fa-grip-vertical";
+
+  const iconProgress = document.createElement("i");
+
+  iconProgress.classList.add("fa-solid");
+  iconProgress.className += " fa-spinner";
+  iconProgress.className += " progress";
+
+  const toDoTitle = document.createElement("p");
+  toDoTitle.innerText = task.taskName;
+  toDoTitle.className = "to-do-title";
+
+  toDoHead.appendChild(iconGrip);
+  toDoHead.appendChild(iconProgress);
+  toDoHead.appendChild(toDoTitle);
+  toDoCard.appendChild(toDoHead);
+
+  /* Criando o details */
+  const toDoDetail = document.createElement("div");
+  toDoDetail.innerText = task.taskDetail;
+  toDoDetail.classList.add("txt-details");
+  toDoCard.appendChild(toDoDetail);
+
+  /* Criando o container dos buttons */
+  const toDoButtonContainer = document.createElement("div");
+  toDoButtonContainer.setAttribute("id", "to-do-element-btn-container");
+
+  /* Auxiliar para guardar o valor do date antes de converter */
+  const auxDate = document.createElement("span");
+  auxDate.innerText = task.taskDate;
+  auxDate.classList.add("aux-date");
+
+  const toDoDate = document.createElement("span");
+  toDoDate.innerText = dateFormatter(task.taskDate);
+  toDoDate.classList.add("to-date");
+
+  const btnStart = document.createElement("button");
+  btnStart.classList.add("btn-element-to-do");
+  btnStart.className += " start";
+  btnStart.innerHTML = '<i class="fa-solid fa-play"></i>Iniciar';
+
+  const btnConclude = document.createElement("button");
+  btnConclude.setAttribute("id", "btn-element-conclude");
+  btnConclude.classList.add("btn-element-to-do");
+  btnConclude.className += " conclude";
+  btnConclude.innerHTML = '<i class="fa-solid fa-check"></i>Concluir';
+
+  const btnEdit = document.createElement("button");
+  btnEdit.setAttribute("id", "btn-element-edit");
+  btnEdit.classList.add("btn-element-to-do");
+  btnEdit.className += " edit";
+  btnEdit.innerHTML = '<i class="fa-solid fa-pen"></i>Editar';
+
+  const btnTrash = document.createElement("button");
+  btnTrash.setAttribute("id", "btn-element-trash");
+  btnTrash.classList.add("btn-element-to-do");
+  btnTrash.className += " trash";
+  btnTrash.innerHTML = '<i class="fa-solid fa-trash"></i>';
+
+  toDoButtonContainer.appendChild(toDoDate);
+  toDoButtonContainer.appendChild(btnStart);
+  toDoButtonContainer.appendChild(btnConclude);
+  toDoButtonContainer.appendChild(btnEdit);
+  toDoButtonContainer.appendChild(btnTrash);
+  toDoButtonContainer.appendChild(auxDate);
+  toDoCard.appendChild(toDoButtonContainer);
+
+  /* Adicionando toda a criação no HTML */
+  toDoList.appendChild(toDoCard);
+}
+
+// REST API CONECTION ------------------------------------
+const save = function (task) {
+  fetch("http://localhost:8080/tasks", 
+    {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: "POST",
+      body: JSON.stringify({
+        title: task.title,
+        description: task.description,
+        delivery: task.delivery,
+        taskStatus: task.taskStatus
+        })
+    })
+    .then(function (response){console.log(response)})
+    .catch(function (response){console.log(response)})
+}
+
+/* Atualizando os dados da edição */
+const updateToDo = (name, details, date) =>{
+  const allToDo = document.querySelectorAll(".to-do-element-list");
+
+  allToDo.forEach((value) => {
+    /* Vou utilizar o nome como IDENTIFICADOR */
+    let toDoNameNameInput = value.querySelector(".to-do-title");
+    let toDoDetailInput = value.querySelector(".txt-details");
+    let toDoDateInput = value.querySelector(".to-date");
+    let toDoAuxDate = value.querySelector(".aux-date");
+
+    if (toDoNameNameInput.innerText === auxTask.name) {
+      toDoNameNameInput.innerText = name;
+      toDoDetailInput.innerText = details;
+      toDoDateInput.innerText = dateFormatter(date);
+      toDoAuxDate.innerText = date;
+    }
+  });
+}
+
+function countTaskFunc(countTask) {
+  const withouTask = document.getElementById("without-task");
+
+  if (countTask > 0) {
+    withouTask.style.display = "none";
+
+  } else {
+    withouTask.style.display = "block";
+  }
+}
+
+function toggleDarkMode () {
+  document.body.classList.toggle("dark");
+
+  const icon = document.getElementById("theme-icon");
+  icon.classList.toggle("fa-moon");
+}
+
+function loadThemePreference () {
+  const darkMode = localStorage.getItem("dark");
+
+  if (darkMode) {
+    toggleDarkMode ();
+  }
+}
+
