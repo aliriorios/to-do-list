@@ -43,8 +43,7 @@ public class Task implements Serializable {
         this.title = title;
         this.description = description;
         this.delivery = delivery;
-
-        setTaskStatus(Objects.requireNonNullElse(taskStatus, TaskStatus.DEFAULT));
+        setTaskStatus(taskStatus);
     }
 
     //custom getter and setter to TaskStatus enum
