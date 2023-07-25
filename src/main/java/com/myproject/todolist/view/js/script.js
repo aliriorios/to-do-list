@@ -10,7 +10,7 @@ const toDoModalinputDetail = document.getElementById("add-details");
 const toDoModalinputDate = document.getElementById("add-input-time-final");
 const toDoModalinputSubmit = document.getElementById("btn-form-submit");
 
-const showTaskModal = document.getElementById("show-task-modal");
+const showTaskModal = document.getElementById("show-modal-task");
 const closeButtonShow = document.getElementById("btn-cross-show-modal");
 
 const editModal = document.getElementById("edit-modal-add");
@@ -56,6 +56,8 @@ toDoModalForm.addEventListener("submit", (event) => {
     clearInput();
     addModal.close();
   }
+
+  window.location.reload();
 })
 
 /* Mapeando os buttons das tarefas */
@@ -331,6 +333,7 @@ function clearInput() {
 const createToDoCard = (task) => {
   /* Criando o card */
   const toDoCard = document.createElement("div");
+  toDoCard.setAttribute("id", task.id);
   toDoCard.classList.add("to-do-element-list");
 
   /* Criando o head do card */
@@ -450,14 +453,24 @@ function loadThemePreference () {
 
 // REST API CONECTION ------------------------------------
 function getAllTask () {
-  fetch("http://localhost:8080/tasks",
+  const apiUrl = "http://localhost:8080/tasks";
+
+  fetch(apiUrl,
   {
     method: 'GET',
   })
-  .then(response => response.json())
+  .then(response => {
+    if (response.ok) {
+      return response.json()
+
+    } else {
+      throw new Error('Error on GET request. Status: ${response.status');
+    }
+  })
   .then(data => {
     data.map((value) => createToDoCard(value))
   })
+  .catch(function (response){console.log(response)})
 }
 
 const save = function (task) {
@@ -475,7 +488,14 @@ const save = function (task) {
       taskStatus: task.taskStatus
     })
   })
-  .then(function (response){console.log(response)})
-  .catch(function (response){console.log(response)})
+  .then(response => {
+    if (response.status === 201) {
+      console.log(response);
+
+    } else {
+      throw new Error('Error on POST request. Status: ${response.status');
+    }
+  })
+  .catch(response => {console.log(response)})
 }
 
