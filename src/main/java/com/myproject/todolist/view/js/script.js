@@ -461,7 +461,7 @@ function getAllTask () {
 }
 
 function getTaskById (id) {
-  const apiUrl = "http://localhost:8080/tasks/showById/${id}";
+  const apiUrl = "http://localhost:8080/tasks/getById/${id}";
 
   fetch(apiUrl, 
     {

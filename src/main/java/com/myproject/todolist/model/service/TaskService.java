@@ -28,7 +28,7 @@ public class TaskService {
     }
 
     @Transactional(readOnly = true)
-    public TaskDto showById (Long id){
+    public TaskDto getById (Long id){
         Optional<Task> result = taskRepository.findById(id);
         return new TaskDto(result.get());
     }
