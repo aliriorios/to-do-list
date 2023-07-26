@@ -359,12 +359,6 @@ const createToDoCard = (task) => {
   toDoHead.appendChild(toDoTitle);
   toDoCard.appendChild(toDoHead);
 
-  /* Criando o details */
-  const toDoDetail = document.createElement("div");
-  toDoDetail.innerText = task.description;
-  toDoDetail.classList.add("txt-details");
-  toDoCard.appendChild(toDoDetail);
-
   /* Criando o container dos buttons */
   const toDoButtonContainer = document.createElement("div");
   toDoButtonContainer.setAttribute("id", "to-do-element-btn-container");
@@ -464,7 +458,7 @@ function getAllTask () {
       return response.json()
 
     } else {
-      throw new Error('Error on GET request. Status: ${response.status');
+      throw new Error('Error on GET request. Status: ${response.status}');
     }
   })
   .then(data => {
@@ -493,7 +487,7 @@ const save = function (task) {
       console.log(response);
 
     } else {
-      throw new Error('Error on POST request. Status: ${response.status');
+      throw new Error('Error on POST request. Status: ${response.status}');
     }
   })
   .catch(response => {console.log(response)})
