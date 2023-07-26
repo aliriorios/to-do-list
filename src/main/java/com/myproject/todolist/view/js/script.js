@@ -64,6 +64,8 @@ toDoModalForm.addEventListener("submit", (event) => {
 document.addEventListener("click", (event) => {
   const targetElement = event.target;
   let parentElement = targetElement.closest(".to-do-element-list");
+  
+  
 
   /* Iniciando a tarefa */
   if (targetElement.classList.contains("start")) {
@@ -109,30 +111,26 @@ document.addEventListener("click", (event) => {
 
   /* Abrir o modal que exibe toda a tarefa */
   if (targetElement.classList.contains("to-do-element-list")) {
-    auxTask = {
-      name : parentElement.getElementsByClassName("to-do-title")[0].innerHTML,
-      details : parentElement.getElementsByClassName("txt-details")[0].innerHTML,
-      date : parentElement.getElementsByClassName("to-date")[0].innerHTML
-    }
+    let id = parentElement.id;
+    let task = {};
+    task = getTaskById(id);
+    
+    console.log(id);
+    console.log(task);
 
     // Exibindo!
-    document.getElementById("show-name").innerText = auxTask.name;
-    document.getElementById("details-area").innerText = auxTask.details;
-    document.getElementById("show-date").innerText = auxTask.date;
+    /* document.getElementById("show-name").innerText = ;
+    document.getElementById("details-area").innerText = ;
+    document.getElementById("show-date").innerText = ; */
     showTaskModal.showModal(); // Abrindo o modal
   }
 
   /* Abrir modal de editar */
   if (targetElement.classList.contains("edit")) {
-    auxTask = {
-      name : parentElement.getElementsByClassName("to-do-title")[0].innerHTML,
-      details : parentElement.getElementsByClassName("txt-details")[0].innerHTML,
-      date : parentElement.getElementsByClassName("to-date")[0].innerHTML,
-    }
 
     // Exibindo
-    editName.value = auxTask.name;
-    editDetails.value = auxTask.details;
+    /* editName.value = ;
+    editDetails.value = ; */
 
     editModal.showModal();
   }
@@ -411,11 +409,6 @@ const updateToDo = (name, details, date) =>{
     let toDoDetailInput = value.querySelector(".txt-details");
     let toDoDateInput = value.querySelector(".to-date");
 
-    if (toDoNameNameInput.innerText === auxTask.name) {
-      toDoNameNameInput.innerText = name;
-      toDoDetailInput.innerText = details;
-      toDoDateInput.innerText = dateFormatter(date);
-    }
   });
 }
 
@@ -450,46 +443,69 @@ function getAllTask () {
   const apiUrl = "http://localhost:8080/tasks";
 
   fetch(apiUrl,
-  {
-    method: 'GET',
-  })
-  .then(response => {
-    if (response.ok) {
-      return response.json()
+    {
+      method: 'GET',
+    })
+    .then(response => {
+      if (response.ok) {
+        return response.json()
 
-    } else {
-      throw new Error('Error on GET request. Status: ${response.status}');
-    }
-  })
-  .then(data => {
-    data.map((value) => createToDoCard(value))
-  })
-  .catch(function (response){console.log(response)})
+      } else {
+        throw new Error('Error on GET request. Status: ${response.status}');
+      }
+    })
+    .then(data => {
+      data.map((value) => createToDoCard(value))
+    })
+    .catch(function (response){console.log(response)})
+}
+
+function getTaskById (id) {
+  const apiUrl = "http://localhost:8080/tasks/showById/${id}";
+
+  fetch(apiUrl, 
+    {
+      method: 'GET',
+    })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+
+      } else {
+        throw new Error('Error on GET request. Status: ${response.status}');
+      }
+    })
+    .then(data => {
+      console.log(data);
+    })
+    .catch(function (response){console.log(response)})
 }
 
 const save = function (task) {
-  fetch("http://localhost:8080/tasks", 
-  {
-    method: "POST",
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      title: task.title,
-      description: task.description,
-      delivery: task.delivery,
-      taskStatus: task.taskStatus
-    })
-  })
-  .then(response => {
-    if (response.status === 201) {
-      console.log(response);
+  const apiUrl = "http://localhost:8080/tasks";
 
-    } else {
-      throw new Error('Error on POST request. Status: ${response.status}');
-    }
-  })
-  .catch(response => {console.log(response)})
+  fetch(apiUrl, 
+    {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        title: task.title,
+        description: task.description,
+        delivery: task.delivery,
+        taskStatus: task.taskStatus
+      })
+    })
+    .then(response => {
+      if (response.status === 201) {
+        console.log(response);
+
+      } else {
+        throw new Error('Error on POST request. Status: ${response.status}');
+      }
+    })
+    .catch(response => {console.log(response)})
 }
 
