@@ -24,7 +24,7 @@ const toDoList = document.getElementById("to-do-list");
 
 // VARIÁVEis DE UTILIDADE
 /* Contadora de tarefas */
-var countTask = 10;
+var countTask = 0;
 
 // EVENTOS ------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
@@ -50,8 +50,8 @@ toDoModalForm.addEventListener("submit", (event) => {
   if (task.title && task.delivery) {
     save(task);
     
-    countTask++;
-    countTaskFunc(countTask);
+    /* countTask++;
+    countTaskFunc(countTask); */
     
     clearInput();
     addModal.close();
@@ -64,8 +64,6 @@ toDoModalForm.addEventListener("submit", (event) => {
 document.addEventListener("click", (event) => {
   const targetElement = event.target;
   let parentElement = targetElement.closest(".to-do-element-list");
-  
-  
 
   /* Iniciando a tarefa */
   if (targetElement.classList.contains("start")) {
@@ -111,8 +109,9 @@ document.addEventListener("click", (event) => {
 
   /* Abrir o modal que exibe toda a tarefa */
   if (targetElement.classList.contains("to-do-element-list")) {
-    let id = parentElement.id;
+    let id = parseInt(parentElement);
     let task = {};
+
     task = getTaskById(id);
     
     console.log(id);
@@ -395,8 +394,13 @@ const createToDoCard = (task) => {
   toDoButtonContainer.appendChild(btnTrash);
   toDoCard.appendChild(toDoButtonContainer);
 
+  
   /* Adicionando toda a criação no HTML */
   toDoList.appendChild(toDoCard);
+
+  /* Remover depois */
+  countTask++;
+  countTaskFunc(countTask);
 }
 
 /* Atualizando os dados da edição */
@@ -471,8 +475,6 @@ function getTaskById (id) {
       if (response.ok) {
         return response.json();
 
-      } else {
-        throw new Error('Error on GET request. Status: ${response.status}');
       }
     })
     .then(data => {
@@ -502,8 +504,6 @@ const save = function (task) {
       if (response.status === 201) {
         console.log(response);
 
-      } else {
-        throw new Error('Error on POST request. Status: ${response.status}');
       }
     })
     .catch(response => {console.log(response)})
