@@ -109,18 +109,15 @@ document.addEventListener("click", (event) => {
 
   /* Abrir o modal que exibe toda a tarefa */
   if (targetElement.classList.contains("to-do-element-list")) {
-    let id = parseInt(parentElement);
-    let task = {};
+    let id = parseInt(parentElement.id);
 
-    task = getTaskById(id);
+    getTaskById(id)
+      .then(data => {
+        document.getElementById("show-title").innerText = data.title;
+        document.getElementById("details-area").innerText = data.description;
+        document.getElementById("show-delivery").innerText = dateFormatter(data.delivery);
+      })
     
-    console.log(id);
-    console.log(task);
-
-    // Exibindo!
-    /* document.getElementById("show-name").innerText = ;
-    document.getElementById("details-area").innerText = ;
-    document.getElementById("show-date").innerText = ; */
     showTaskModal.showModal(); // Abrindo o modal
   }
 
@@ -453,9 +450,6 @@ function getAllTask () {
     .then(response => {
       if (response.ok) {
         return response.json()
-
-      } else {
-        throw new Error('Error on GET request. Status: ${response.status}');
       }
     })
     .then(data => {
@@ -465,20 +459,16 @@ function getAllTask () {
 }
 
 function getTaskById (id) {
-  const apiUrl = "http://localhost:8080/tasks/getById/${id}";
+  const apiUrl = "http://localhost:8080/tasks/getById/" + id;
 
-  fetch(apiUrl, 
+  return fetch(apiUrl, 
     {
       method: 'GET',
     })
     .then(response => {
       if (response.ok) {
         return response.json();
-
       }
-    })
-    .then(data => {
-      console.log(data);
     })
     .catch(function (response){console.log(response)})
 }
@@ -503,7 +493,6 @@ const save = function (task) {
     .then(response => {
       if (response.status === 201) {
         console.log(response);
-
       }
     })
     .catch(response => {console.log(response)})
