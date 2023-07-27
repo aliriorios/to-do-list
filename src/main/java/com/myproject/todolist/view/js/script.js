@@ -16,9 +16,9 @@ const closeButtonShow = document.getElementById("btn-cross-show-modal");
 const editModal = document.getElementById("edit-modal-add");
 const closeButtonEdit = document.getElementById("btn-cross-edit-modal");
 const editForm = document.getElementById("edit-form-todo");
-let editName = document.getElementById("edit-input");
-let editDetails = document.getElementById("edit-details");
-let editDate = document.getElementById("edit-input-time-final");
+let editTitle = document.getElementById("edit-input");
+let editDescription = document.getElementById("edit-details");
+let editDelivery = document.getElementById("edit-input-time-final");
 
 const toDoList = document.getElementById("to-do-list");
 
@@ -48,7 +48,8 @@ toDoModalForm.addEventListener("submit", (event) => {
   }
 
   if (task.title && task.delivery) {
-    save(task);
+    saveTask(task);
+    createToDoCard(task);
     
     /* countTask++;
     countTaskFunc(countTask); */
@@ -56,8 +57,6 @@ toDoModalForm.addEventListener("submit", (event) => {
     clearInput();
     addModal.close();
   }
-
-  window.location.reload();
 })
 
 /* Mapeando os buttons das tarefas */
@@ -100,8 +99,6 @@ document.addEventListener("click", (event) => {
     icon.classList.remove("fa-circle-xmark");
     icon.classList.add("fa-circle-check");
 
-    // parentElement.style.backgroundColor = "#8a8a8a";
-
     btnDisable(btnConclude);
     btnDisable(btnStart);
     btnDisable(btnEdit);
@@ -123,16 +120,23 @@ document.addEventListener("click", (event) => {
 
   /* Abrir modal de editar */
   if (targetElement.classList.contains("edit")) {
+    let id = parseInt(parentElement.id);
 
-    // Exibindo
-    /* editName.value = ;
-    editDetails.value = ; */
+    getTaskById(id)
+      .then(data => {
+        editTitle.value = data.title;
+        editDescription.value = data.description; 
+        editDelivery.value = data.delivery;
+      })
 
     editModal.showModal();
   }
 
   /* Deletando a tarefa */
   if (targetElement.classList.contains("trash") || targetElement.classList.contains("fa-trash")) {
+    let id = parseInt(parentElement.id);
+
+    deleteTask(id);
     parentElement.remove();
 
     countTask--;
@@ -473,7 +477,7 @@ function getTaskById (id) {
     .catch(function (response){console.log(response)})
 }
 
-const save = function (task) {
+const saveTask = function (task) {
   const apiUrl = "http://localhost:8080/tasks";
 
   fetch(apiUrl, 
@@ -498,3 +502,17 @@ const save = function (task) {
     .catch(response => {console.log(response)})
 }
 
+function deleteTask (id) {
+  const apiUrl = "http://localhost:8080/tasks/" + id;
+
+  fetch(apiUrl, 
+    {
+      method: 'DELETE',
+    })
+    .then(response => {
+      if (response.status === 204) {
+        console.log(response);
+      }
+    })
+    .catch(response => {console.log(response)})
+}
