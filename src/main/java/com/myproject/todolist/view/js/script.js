@@ -48,8 +48,10 @@ toDoModalForm.addEventListener("submit", (event) => {
   }
 
   if (task.title && task.delivery) {
-    saveTask(task);
-    createToDoCard(task);
+    saveTask(task)
+      .then(data => {
+        createToDoCard(data);
+      })
     
     /* countTask++;
     countTaskFunc(countTask); */
@@ -477,10 +479,10 @@ function getTaskById (id) {
     .catch(function (response){console.log(response)})
 }
 
-const saveTask = function (task) {
+function saveTask (task) {
   const apiUrl = "http://localhost:8080/tasks";
 
-  fetch(apiUrl, 
+  return fetch(apiUrl, 
     {
       method: "POST",
       headers: {
@@ -496,7 +498,7 @@ const saveTask = function (task) {
     })
     .then(response => {
       if (response.status === 201) {
-        console.log(response);
+        return response.json();
       }
     })
     .catch(response => {console.log(response)})
