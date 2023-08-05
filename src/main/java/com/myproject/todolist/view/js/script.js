@@ -44,7 +44,6 @@ toDoModalForm.addEventListener("submit", (event) => {
     title : toDoModalinputName.value,
     description : toDoModalinputDetail.value,
     delivery : inputDate,
-    taskStatus : "DEFAULT"
   }
 
   if (task.title && task.delivery) {
@@ -150,18 +149,18 @@ document.addEventListener("click", (event) => {
 editForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const inputDate = new Date(editDate.value);
+  const inputDate = new Date(editDelivery.value);
   inputDate.setDate(inputDate.getDate() + 1);
 
   const task = {
-    name : editName.value,
-    details : editDetails.value,
-    date : inputDate
+    title : editTitle.value,
+    description : editDescription.value,
+    delivery : inputDate
   }
   
-  if (task.name && task.date) {
+  if (task.title && task.delivery) {
     // Atualizar
-    updateToDo(task.name, task.details, task.date);
+    // updateToDo(task);
     editModal.close();
   }
 });
@@ -350,12 +349,18 @@ const createToDoCard = (task) => {
   iconProgress.className += " fa-spinner";
   iconProgress.className += " progress";
 
+  const taskStatus = document.createElement("span");
+  taskStatus.innerText = task.taskStatus;
+  taskStatus.classList.add("task-status");
+  taskStatus.style.display = "none";
+
   const toDoTitle = document.createElement("p");
   toDoTitle.innerText = task.title;
   toDoTitle.className = "to-do-title";
 
   toDoHead.appendChild(iconGrip);
   toDoHead.appendChild(iconProgress);
+  toDoHead.appendChild(taskStatus);
   toDoHead.appendChild(toDoTitle);
   toDoCard.appendChild(toDoHead);
 
@@ -407,16 +412,8 @@ const createToDoCard = (task) => {
 }
 
 /* Atualizando os dados da edição */
-const updateToDo = (name, details, date) =>{
-  const allToDo = document.querySelectorAll(".to-do-element-list");
-
-  allToDo.forEach((value) => {
-    /* Vou utilizar o nome como IDENTIFICADOR */
-    let toDoNameNameInput = value.querySelector(".to-do-title");
-    let toDoDetailInput = value.querySelector(".txt-details");
-    let toDoDateInput = value.querySelector(".to-date");
-
-  });
+const updateToDo = (task) =>{
+  
 }
 
 function countTaskFunc(countTask) {
@@ -447,7 +444,7 @@ function loadThemePreference () {
 
 // REST API CONECTION ------------------------------------
 function getAllTask () {
-  const apiUrl = "http://localhost:8080/tasks";
+  const apiUrl = `http://localhost:8080/tasks`;
 
   fetch(apiUrl,
     {
@@ -465,7 +462,7 @@ function getAllTask () {
 }
 
 function getTaskById (id) {
-  const apiUrl = "http://localhost:8080/tasks/getById/" + id;
+  const apiUrl = `http://localhost:8080/tasks/getById/${id}`;
 
   return fetch(apiUrl, 
     {
@@ -480,7 +477,7 @@ function getTaskById (id) {
 }
 
 function saveTask (task) {
-  const apiUrl = "http://localhost:8080/tasks";
+  const apiUrl = `http://localhost:8080/tasks`;
 
   return fetch(apiUrl, 
     {
@@ -493,7 +490,7 @@ function saveTask (task) {
         title: task.title,
         description: task.description,
         delivery: task.delivery,
-        taskStatus: task.taskStatus
+        taskStatus: "DEFAULT"
       })
     })
     .then(response => {
@@ -504,8 +501,27 @@ function saveTask (task) {
     .catch(response => {console.log(response)})
 }
 
+function updateTask (id, task) {
+  const apiUrl = `http://localhost:8080/tasks/${id}`;
+
+  fetch(apiUrl, 
+    {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        title: task.title,
+        description: task.description,
+        delivery: task.delivery,
+        taskStatus: "DEFAULT"
+      })
+    })
+}
+
 function deleteTask (id) {
-  const apiUrl = "http://localhost:8080/tasks/" + id;
+  const apiUrl = `http://localhost:8080/tasks/${id}`;
 
   fetch(apiUrl, 
     {
