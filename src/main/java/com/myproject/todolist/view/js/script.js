@@ -25,6 +25,7 @@ const toDoList = document.getElementById("to-do-list");
 
 // VARIÁVEis DE UTILIDADE
 /* Contadora de tarefas */
+var id;
 var countTask = 0;
 
 // EVENTOS ------------------------------------
@@ -108,7 +109,7 @@ document.addEventListener("click", (event) => {
 
   /* Abrir o modal que exibe toda a tarefa */
   if (targetElement.classList.contains("to-do-element-list")) {
-    let id = parseInt(parentElement.id);
+    id = parseInt(parentElement.id);
 
     getTaskById(id)
       .then(data => {
@@ -122,7 +123,7 @@ document.addEventListener("click", (event) => {
 
   /* Abrir modal de editar */
   if (targetElement.classList.contains("edit")) {
-    let id = parseInt(parentElement.id);
+    id = parseInt(parentElement.id);
     
     getTaskById(id)
     .then(data => {
@@ -156,6 +157,7 @@ editForm.addEventListener("submit", (event) => {
   inputDate.setDate(inputDate.getDate() + 1);
 
   const task = {
+    id : id,
     title : editTitle.value,
     description : editDescription.value,
     delivery : inputDate,
@@ -163,9 +165,9 @@ editForm.addEventListener("submit", (event) => {
   }
   
   if (task.title && task.delivery) {
-    // Atualizar
-    // updateToDo(task);
-    console.table(task);
+    updateTask(task); // Atualizar
+    
+    window.location.reload();
     editModal.close();
   }
 });
@@ -506,8 +508,8 @@ function saveTask (task) {
     .catch(response => {console.log(response)})
 }
 
-function updateTask (id, task) {
-  const apiUrl = `http://localhost:8080/tasks/${id}`;
+function updateTask (task) {
+  const apiUrl = `http://localhost:8080/tasks/${task.id}`;
 
   fetch(apiUrl, 
     {
@@ -520,9 +522,15 @@ function updateTask (id, task) {
         title: task.title,
         description: task.description,
         delivery: task.delivery,
-        taskStatus: "DEFAULT"
+        taskStatus: task.taskStatus
       })
     })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(response => {console.log(response)})
 }
 
 function deleteTask (id) {
