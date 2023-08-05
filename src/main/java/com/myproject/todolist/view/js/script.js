@@ -19,6 +19,7 @@ const editForm = document.getElementById("edit-form-todo");
 let editTitle = document.getElementById("edit-input");
 let editDescription = document.getElementById("edit-details");
 let editDelivery = document.getElementById("edit-input-time-final");
+let editTaskStatus; // auxiliar para o status de cada tarefa na edição
 
 const toDoList = document.getElementById("to-do-list");
 
@@ -122,13 +123,15 @@ document.addEventListener("click", (event) => {
   /* Abrir modal de editar */
   if (targetElement.classList.contains("edit")) {
     let id = parseInt(parentElement.id);
-
+    
     getTaskById(id)
-      .then(data => {
-        editTitle.value = data.title;
-        editDescription.value = data.description; 
-        editDelivery.value = data.delivery;
-      })
+    .then(data => {
+      editTitle.value = data.title;
+      editDescription.value = data.description; 
+      editDelivery.value = data.delivery;
+    })
+    
+    editTaskStatus = parentElement.getElementsByClassName("task-status")[0].innerText;
 
     editModal.showModal();
   }
@@ -155,12 +158,14 @@ editForm.addEventListener("submit", (event) => {
   const task = {
     title : editTitle.value,
     description : editDescription.value,
-    delivery : inputDate
+    delivery : inputDate,
+    taskStatus : editTaskStatus
   }
   
   if (task.title && task.delivery) {
     // Atualizar
     // updateToDo(task);
+    console.table(task);
     editModal.close();
   }
 });
