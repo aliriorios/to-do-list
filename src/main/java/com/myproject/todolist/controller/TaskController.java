@@ -21,6 +21,7 @@ public class TaskController {
 
     @GetMapping
     public ResponseEntity<List<TaskMinDto>> listAll() {
+        taskService.updateTaskStatusByDate();
         return ResponseEntity.ok().body(taskService.listAll());
     }
 
@@ -53,6 +54,7 @@ public class TaskController {
     @PutMapping("/{id}")
     public ResponseEntity<Task> update (@PathVariable Long id, @RequestBody Task task) {
         task = taskService.update(id, task);
+        taskService.updateTaskStatusByDate();
         return ResponseEntity.ok().body(task);
     }
 }

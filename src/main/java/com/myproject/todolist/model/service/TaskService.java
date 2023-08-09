@@ -3,6 +3,7 @@ package com.myproject.todolist.model.service;
 import com.myproject.todolist.model.dto.TaskDto;
 import com.myproject.todolist.model.dto.TaskMinDto;
 import com.myproject.todolist.model.entity.Task;
+import com.myproject.todolist.model.entity.enums.TaskStatus;
 import com.myproject.todolist.model.repository.TaskRepository;
 import com.myproject.todolist.model.service.exception.DatabaseException;
 import com.myproject.todolist.model.service.exception.ResourceNotFoundException;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,15 +75,32 @@ public class TaskService {
         }
     }
 
+    /* ASSISTANT -------------------------------------------------------------------------- */
+    public void updateTaskStatusByDate () {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate today = LocalDate.parse(LocalDate.now().format(formatter));
+
+        List<Task> result = taskRepository.findAll();
+
+        for (Task value : result) {
+            LocalDate delivery = LocalDate.parse(value.getDelivery().format(formatter));
+
+            if (delivery.equals(today)) { //delivery == today
+                value.setTaskStatus(TaskStatus.TODAY);
+                taskRepository.save(value);
+
+            } else if (delivery.isBefore(today)) { //delivery < today
+                value.setTaskStatus(TaskStatus.UNDELIVERED);
+                taskRepository.save(value);
+            }
+        }
+    }
+
     /* PRIVATE -------------------------------------------------------------------------- */
     private void updateData (Task entity, Task task) {
         entity.setTitle(task.getTitle());
         entity.setDescription(task.getDescription());
         entity.setDelivery(task.getDelivery());
         entity.setTaskStatus(task.getTaskStatus());
-    }
-
-    private void updateTaskStatusByDate () {
-        
     }
 }
