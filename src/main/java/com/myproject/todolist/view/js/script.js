@@ -133,11 +133,7 @@ document.addEventListener("click", (event) => {
       editTitle.value = data.title;
       editDescription.value = data.description; 
       editDelivery.value = data.delivery;
-    })
-
-    getTaskStatusCode(id)
-    .then(data => {
-      editTaskStatus = data;
+      editTaskStatus = data.taskStatus;
     })
     
     editModal.showModal();
@@ -160,7 +156,6 @@ editForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
   const inputDate = new Date(editDelivery.value);
-  inputDate.setDate(inputDate.getDate() + 1);
 
   const task = {
     id : id,
@@ -173,7 +168,7 @@ editForm.addEventListener("submit", (event) => {
   if (task.title && task.delivery) {
     updateTask(task); // Atualizar
     
-    // window.location.reload(); //Recarregar a página
+    window.location.reload(); //Recarregar a página
     editModal.close();
   }
 });
@@ -245,12 +240,17 @@ closeButtonEdit.onclick = () => {
 }
 
 // FUNÇÕES ------------------------------------
+// 1 segundo
 setInterval(() => {
   showHeaderDate();
   minInputDateValidation();
   // checkTaskStatus();
-  // updateAllTaskStatusByDate();
 }, 1000);
+
+// 1 hora
+setInterval(() => {
+  // checkTaskStatus();
+}, 3600000);
 
 /* Exibindo a data de hoje */
 function showHeaderDate () {
@@ -294,61 +294,46 @@ function dateFormatterToEdit(date) {
   return year + '-' + month + '-' + day;
 }
 
-// RESOLVER: NÃO ESTÁ PASSANDO PARA A PROXIMA TAREFA!
-/* function updateAllTaskStatusByDate () {
-  let today = new Date();
-  today = dateFormatterToEdit(today);
-
+// Atualizando os ícones de status
+function checkTaskStatus() {
   const allToDo = document.querySelectorAll(".to-do-element-list");
+
+  const code = {
+    default : 1,
+    started : 2,
+    concluded : 3,
+    today : 4,
+    undelivered : 5
+  }
 
   allToDo.forEach((value) => {
     let id = value.getAttribute("id");
-    let delivery = new Date();
+    let iconProgress = value.getElementsByClassName("progress")[0];
 
-    getDeliveryDate(id)
+    getTaskStatusCode(id)
     .then(data => {
-      delivery = dateFormatterToEdit(data);
+      if (code.today === data) { // Para hoje
+        if (iconProgress.classList.contains("fa-spinner")) {
+          iconProgress.classList.remove("fa-spinner");
+          iconProgress.classList.add("fa-circle-exclamation");
+        }
+  
+      } else if (code.undelivered === data) { // Atrasado
+        if (iconProgress.classList.contains("fa-spinner")) {
+          iconProgress.classList.remove("fa-spinner");
+          iconProgress.classList.add("fa-circle-xmark");
+        }
+  
+      } else {
+        if (!iconProgress.classList.contains("fa-circle-check")) {
+          iconProgress.classList.remove("fa-circle-exclamation");
+          iconProgress.classList.remove("fa-circle-xmark");
+          iconProgress.classList.add("fa-spinner");
+        }
+      }
     })
-
-    console.log(delivery);
-  })
-} */
-
-/* function checkTaskStatus() {
-  const allToDo = document.querySelectorAll(".to-do-element-list");
-
-  allToDo.forEach((value) => {
-    let id = value.parentElement(id);
-
-    const code = {
-      default : 1,
-      started : 2,
-      concluded : 3,
-      today : 4,
-      undelivered : 5
-    }
-
-    if (code.today === ) { // Para hoje
-      if (iconProgress.classList.contains("fa-spinner")) {
-        iconProgress.classList.remove("fa-spinner");
-        iconProgress.classList.add("fa-circle-exclamation");
-      }
-
-    } else if (code.undelivered > ) { // Atrasado
-      if (iconProgress.classList.contains("fa-spinner")) {
-        iconProgress.classList.remove("fa-spinner");
-        iconProgress.classList.add("fa-circle-xmark");
-      }
-
-    } else {
-      if (!iconProgress.classList.contains("fa-circle-check")) {
-        iconProgress.classList.remove("fa-circle-exclamation");
-        iconProgress.classList.remove("fa-circle-xmark");
-        iconProgress.classList.add("fa-spinner");
-      }
-    }
   });
-} */
+}
 
 /* Trocando permissão de botões */
 function btnDisable(btn) {

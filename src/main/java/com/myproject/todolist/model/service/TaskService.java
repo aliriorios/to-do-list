@@ -80,4 +80,8 @@ public class TaskService {
         entity.setDelivery(task.getDelivery());
         entity.setTaskStatus(task.getTaskStatus());
     }
+
+    private void updateTaskStatusByDate () {
+        
+    }
 }
