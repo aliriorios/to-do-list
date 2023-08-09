@@ -28,6 +28,11 @@ public class TaskController {
         return ResponseEntity.ok().body(taskService.getById(id));
     }
 
+    @GetMapping("/getStatusCode/{id}")
+    public ResponseEntity<Integer> getTaskStatusCode (@PathVariable Long id) {
+        return ResponseEntity.ok().body(taskService.getTaskStatusCode(id));
+    }
+
     @PostMapping
     public ResponseEntity<Task> save (@RequestBody Task task) {
         return new ResponseEntity<>(taskService.save(task), HttpStatus.CREATED);

@@ -19,7 +19,7 @@ const editForm = document.getElementById("edit-form-todo");
 let editTitle = document.getElementById("edit-input");
 let editDescription = document.getElementById("edit-details");
 let editDelivery = document.getElementById("edit-input-time-final");
-let editTaskStatus; // auxiliar para o status de cada tarefa na edição
+let editTaskStatus;
 
 const toDoList = document.getElementById("to-do-list");
 
@@ -131,9 +131,12 @@ document.addEventListener("click", (event) => {
       editDescription.value = data.description; 
       editDelivery.value = data.delivery;
     })
-    
-    editTaskStatus = parentElement.getElementsByClassName("task-status")[0].innerText;
 
+    getTaskStatusCode(id)
+    .then(data => {
+      editTaskStatus = data;
+    })
+    
     editModal.showModal();
   }
 
@@ -167,7 +170,7 @@ editForm.addEventListener("submit", (event) => {
   if (task.title && task.delivery) {
     updateTask(task); // Atualizar
     
-    window.location.reload();
+    window.location.reload(); //Recarregar a página
     editModal.close();
   }
 });
@@ -356,18 +359,12 @@ const createToDoCard = (task) => {
   iconProgress.className += " fa-spinner";
   iconProgress.className += " progress";
 
-  const taskStatus = document.createElement("span");
-  taskStatus.innerText = task.taskStatus;
-  taskStatus.classList.add("task-status");
-  taskStatus.style.display = "none";
-
   const toDoTitle = document.createElement("p");
   toDoTitle.innerText = task.title;
   toDoTitle.className = "to-do-title";
 
   toDoHead.appendChild(iconGrip);
   toDoHead.appendChild(iconProgress);
-  toDoHead.appendChild(taskStatus);
   toDoHead.appendChild(toDoTitle);
   toDoCard.appendChild(toDoHead);
 
@@ -470,6 +467,21 @@ function getAllTask () {
 
 function getTaskById (id) {
   const apiUrl = `http://localhost:8080/tasks/getById/${id}`;
+
+  return fetch(apiUrl, 
+    {
+      method: 'GET',
+    })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(function (response){console.log(response)})
+}
+
+function getTaskStatusCode (id) {
+  const apiUrl = `http://localhost:8080/tasks/getStatusCode/${id}`;
 
   return fetch(apiUrl, 
     {

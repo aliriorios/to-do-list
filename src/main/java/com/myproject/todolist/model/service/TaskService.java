@@ -33,6 +33,12 @@ public class TaskService {
         return new TaskDto(result.get());
     }
 
+    @Transactional(readOnly = true)
+    public Integer getTaskStatusCode (Long id) {
+        Optional<Task> result = taskRepository.findById(id);
+        return result.get().getTaskStatus().getCode();
+    }
+
     public Task save (Task task) {
         return taskRepository.save(task);
     }
