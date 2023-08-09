@@ -74,7 +74,6 @@ document.addEventListener("click", (event) => {
     let btnIconPlay = parentElement.getElementsByClassName("fa-play")[0];
     let btnIconPause = parentElement.getElementsByClassName("fa-pause")[0];
 
-    icon.classList.toggle("fa-spinner-progress");
     btnStart.classList.toggle("inProgress");
 
     if (btnIconPlay) { // Se iniciar a tarefa
@@ -87,6 +86,8 @@ document.addEventListener("click", (event) => {
 
       btnIconPlay = parentElement.getElementsByClassName("fa-play")[0];
     }
+
+    //Atualizar o TaskStatus para STARTED
   }
 
   /* Concluindo a tarefa */
@@ -105,6 +106,8 @@ document.addEventListener("click", (event) => {
     btnDisable(btnConclude);
     btnDisable(btnStart);
     btnDisable(btnEdit);
+
+    //Atualizar o TaskStatus para CONCLUDED
   }
 
   /* Abrir o modal que exibe toda a tarefa */
@@ -244,7 +247,7 @@ closeButtonEdit.onclick = () => {
 setInterval(() => {
   showHeaderDate();
   minInputDateValidation();
-  // checkTaskStatus();
+  checkTaskStatus();
 }, 1000);
 
 // 1 hora
@@ -312,6 +315,12 @@ function checkTaskStatus() {
 
     getTaskStatusCode(id)
     .then(data => {
+      if (code.started === data) {
+        if (iconProgress.classList.contains("fa-spinner")) {
+          iconProgress.classList.add("fa-spinner-progress");
+        }
+      }
+
       if (code.today === data) { // Para hoje
         if (iconProgress.classList.contains("fa-spinner")) {
           iconProgress.classList.remove("fa-spinner");
