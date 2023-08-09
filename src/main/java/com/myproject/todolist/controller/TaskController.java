@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -31,6 +32,11 @@ public class TaskController {
     @GetMapping("/getStatusCode/{id}")
     public ResponseEntity<Integer> getTaskStatusCode (@PathVariable Long id) {
         return ResponseEntity.ok().body(taskService.getTaskStatusCode(id));
+    }
+
+    @GetMapping("/getDelivery/{id}")
+    public ResponseEntity<LocalDate> getDeliveryDate (@PathVariable Long id) {
+        return ResponseEntity.ok().body(taskService.getDeliveryDate(id));
     }
 
     @PostMapping

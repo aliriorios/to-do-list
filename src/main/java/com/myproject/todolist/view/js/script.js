@@ -27,7 +27,7 @@ const toDoList = document.getElementById("to-do-list");
 /* Contadora de tarefas */
 var id;
 var countTask = 0;
-
+  
 // EVENTOS ------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
   loadThemePreference();
@@ -109,13 +109,16 @@ document.addEventListener("click", (event) => {
 
   /* Abrir o modal que exibe toda a tarefa */
   if (targetElement.classList.contains("to-do-element-list")) {
-    id = parseInt(parentElement.id);
+    id = parentElement.id;
 
     getTaskById(id)
       .then(data => {
         document.getElementById("show-title").innerText = data.title;
         document.getElementById("details-area").innerText = data.description;
-        document.getElementById("show-delivery").innerText = dateFormatter(data.delivery);
+
+        const dateDelivery = new Date(data.delivery);
+        dateDelivery.setDate(dateDelivery.getDate() + 1);
+        document.getElementById("show-delivery").innerText = dateFormatter(dateDelivery);
       })
     
     showTaskModal.showModal(); // Abrindo o modal
@@ -123,7 +126,7 @@ document.addEventListener("click", (event) => {
 
   /* Abrir modal de editar */
   if (targetElement.classList.contains("edit")) {
-    id = parseInt(parentElement.id);
+    id = parentElement.id;
     
     getTaskById(id)
     .then(data => {
@@ -170,7 +173,7 @@ editForm.addEventListener("submit", (event) => {
   if (task.title && task.delivery) {
     updateTask(task); // Atualizar
     
-    window.location.reload(); //Recarregar a página
+    // window.location.reload(); //Recarregar a página
     editModal.close();
   }
 });
@@ -224,11 +227,29 @@ newButton.addEventListener("mouseleave", (event) => {
   }
 });
 
+/* Modal de Adicionar tarefa */
+newButton.onclick = () => {
+  addModal.showModal();
+}
+
+closeButtonAdd.onclick = () => {
+  addModal.close();
+}
+
+closeButtonShow.onclick = () => {
+  showTaskModal.close();
+}
+
+closeButtonEdit.onclick = () => {
+  editModal.close();
+}
+
 // FUNÇÕES ------------------------------------
 setInterval(() => {
   showHeaderDate();
   minInputDateValidation();
-  // checkDateLimitTask();
+  // checkTaskStatus();
+  // updateAllTaskStatusByDate();
 }, 1000);
 
 /* Exibindo a data de hoje */
@@ -273,22 +294,47 @@ function dateFormatterToEdit(date) {
   return year + '-' + month + '-' + day;
 }
 
-/* function checkDateLimitTask() {
+// RESOLVER: NÃO ESTÁ PASSANDO PARA A PROXIMA TAREFA!
+/* function updateAllTaskStatusByDate () {
+  let today = new Date();
+  today = dateFormatterToEdit(today);
+
   const allToDo = document.querySelectorAll(".to-do-element-list");
 
   allToDo.forEach((value) => {
-    let today = new Date();
-    today = dateFormatterToEdit(today);
+    let id = value.getAttribute("id");
+    let delivery = new Date();
 
-    let iconProgress = value.getElementsByClassName("progress")[0];
+    getDeliveryDate(id)
+    .then(data => {
+      delivery = dateFormatterToEdit(data);
+    })
 
-    if (today === ) { // Para hoje
+    console.log(delivery);
+  })
+} */
+
+/* function checkTaskStatus() {
+  const allToDo = document.querySelectorAll(".to-do-element-list");
+
+  allToDo.forEach((value) => {
+    let id = value.parentElement(id);
+
+    const code = {
+      default : 1,
+      started : 2,
+      concluded : 3,
+      today : 4,
+      undelivered : 5
+    }
+
+    if (code.today === ) { // Para hoje
       if (iconProgress.classList.contains("fa-spinner")) {
         iconProgress.classList.remove("fa-spinner");
         iconProgress.classList.add("fa-circle-exclamation");
       }
 
-    } else if (today > ) { // Atrasado
+    } else if (code.undelivered > ) { // Atrasado
       if (iconProgress.classList.contains("fa-spinner")) {
         iconProgress.classList.remove("fa-spinner");
         iconProgress.classList.add("fa-circle-xmark");
@@ -303,23 +349,6 @@ function dateFormatterToEdit(date) {
     }
   });
 } */
-
-/* Modal de Adicionar tarefa */
-newButton.onclick = () => {
-  addModal.showModal();
-}
-
-closeButtonAdd.onclick = () => {
-  addModal.close();
-}
-
-closeButtonShow.onclick = () => {
-  showTaskModal.close();
-}
-
-closeButtonEdit.onclick = () => {
-  editModal.close();
-}
 
 /* Trocando permissão de botões */
 function btnDisable(btn) {
@@ -373,7 +402,9 @@ const createToDoCard = (task) => {
   toDoButtonContainer.setAttribute("id", "to-do-element-btn-container");
 
   const toDoDate = document.createElement("span");
-  toDoDate.innerText = dateFormatter(task.delivery);
+  const dateDelivery = new Date(task.delivery);
+  dateDelivery.setDate(dateDelivery.getDate() + 1)
+  toDoDate.innerText = dateFormatter(dateDelivery);
   toDoDate.classList.add("to-date");
 
   const btnStart = document.createElement("button");
@@ -493,6 +524,20 @@ function getTaskStatusCode (id) {
       }
     })
     .catch(function (response){console.log(response)})
+}
+
+function getDeliveryDate (id) {
+  const apiUrl = `http://localhost:8080/tasks/getDelivery/${id}`;
+
+  return fetch(apiUrl, {
+    method: 'GET',
+  })
+  .then(response => {
+    if (response.ok) {
+      return response.json();
+    }
+  })
+  .catch(function (response){console.log(response)})
 }
 
 function saveTask (task) {

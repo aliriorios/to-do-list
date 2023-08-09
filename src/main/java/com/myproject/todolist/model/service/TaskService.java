@@ -13,6 +13,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,12 @@ public class TaskService {
     public Integer getTaskStatusCode (Long id) {
         Optional<Task> result = taskRepository.findById(id);
         return result.get().getTaskStatus().getCode();
+    }
+
+    @Transactional(readOnly = true)
+    public LocalDate getDeliveryDate (Long id) {
+        Optional<Task> result = taskRepository.findById(id);
+        return result.get().getDelivery();
     }
 
     public Task save (Task task) {
