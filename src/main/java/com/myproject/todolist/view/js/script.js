@@ -31,7 +31,10 @@ var countTask = 0;
 // EVENTOS ------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
   loadThemePreference();
+  
   getAllTask();
+  checkTaskStatus();
+
   countTaskFunc(countTask);
 });
 
@@ -80,14 +83,16 @@ document.addEventListener("click", (event) => {
       btnStart.innerHTML = '<i class="fa-solid fa-pause"></i>Pausar';
 
       btnIconPause = parentElement.getElementsByClassName("fa-pause")[0];
+      
+      //Atualizar o TaskStatus para STARTED
 
     } else if (btnIconPause) { // Se pausar a tarefa
       btnStart.innerHTML = '<i class="fa-solid fa-play"></i>Iniciar';
 
       btnIconPlay = parentElement.getElementsByClassName("fa-play")[0];
-    }
 
-    //Atualizar o TaskStatus para STARTED
+      //Atualizar o TaskStatus para PAUSED
+    }
   }
 
   /* Concluindo a tarefa */
@@ -304,9 +309,10 @@ function checkTaskStatus() {
   const code = {
     default : 1,
     started : 2,
-    concluded : 3,
-    today : 4,
-    undelivered : 5
+    paused : 3,
+    concluded : 4,
+    today : 5,
+    undelivered : 6
   }
 
   allToDo.forEach((value) => {
@@ -315,11 +321,15 @@ function checkTaskStatus() {
 
     getTaskStatusCode(id)
     .then(data => {
-      if (code.started === data) {
+      if (code.started === data) { //Iniciado
         if (iconProgress.classList.contains("fa-spinner")) {
           iconProgress.classList.add("fa-spinner-progress");
         }
       }
+
+      //criar o condicional que aplica o icone de pause
+
+      //criar o condicional que aplica o icone de concluído
 
       if (code.today === data) { // Para hoje
         if (iconProgress.classList.contains("fa-spinner")) {
@@ -327,13 +337,13 @@ function checkTaskStatus() {
           iconProgress.classList.add("fa-circle-exclamation");
         }
   
-      } else if (code.undelivered === data) { // Atrasado
+      } else if (code.undelivered === data) { //Atrasado
         if (iconProgress.classList.contains("fa-spinner")) {
           iconProgress.classList.remove("fa-spinner");
           iconProgress.classList.add("fa-circle-xmark");
         }
   
-      } else {
+      } else { //Default
         if (!iconProgress.classList.contains("fa-circle-check")) {
           iconProgress.classList.remove("fa-circle-exclamation");
           iconProgress.classList.remove("fa-circle-xmark");

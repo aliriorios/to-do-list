@@ -23,9 +23,9 @@ import java.util.Optional;
 public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
-
-    @Transactional(readOnly = true)
+    
     public List<TaskMinDto> listAll() {
+        updateTaskStatusByDate();
         List<Task> result = taskRepository.findAll();
         return result.stream().map(TaskMinDto::new).toList();
     }
@@ -72,11 +72,14 @@ public class TaskService {
 
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(id);
+
+        } finally {
+            updateTaskStatusByDate();
         }
     }
 
-    /* ASSISTANT -------------------------------------------------------------------------- */
-    public void updateTaskStatusByDate () {
+    /* PRIVATE -------------------------------------------------------------------------- */
+    private void updateTaskStatusByDate () {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate today = LocalDate.parse(LocalDate.now().format(formatter));
 
@@ -96,7 +99,6 @@ public class TaskService {
         }
     }
 
-    /* PRIVATE -------------------------------------------------------------------------- */
     private void updateData (Task entity, Task task) {
         entity.setTitle(task.getTitle());
         entity.setDescription(task.getDescription());

@@ -3,9 +3,10 @@ package com.myproject.todolist.model.entity.enums;
 public enum TaskStatus {
     DEFAULT(1),
     STARTED(2),
-    CONCLUDED(3),
-    TODAY(4),
-    UNDELIVERED(5);
+    PAUSED(3),
+    CONCLUDED(4),
+    TODAY(5),
+    UNDELIVERED(6);
 
     private int code;
 
