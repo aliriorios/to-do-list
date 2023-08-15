@@ -23,7 +23,7 @@ import java.util.Optional;
 public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
-    
+
     public List<TaskMinDto> listAll() {
         updateTaskStatusByDate();
         List<Task> result = taskRepository.findAll();

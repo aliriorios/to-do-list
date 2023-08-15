@@ -234,29 +234,34 @@ h1 {
   cursor: grab;
 }
 
-.fa-spinner {
-  color: rgba(131, 131, 131, 0.7);
+.fa-spinner,
+.fa-spinner-progress,
+.fa-circle-stop,
+.fa-circle-check,
+.fa-circle-xmark,
+.fa-circle-exclamation {
   margin-left: 8px;
+}
+
+.fa-spinner,
+.fa-circle-stop {
+  color: rgba(131, 131, 131, 0.7);
 }
 
 .fa-spinner-progress {
   color: var(--progress-purple-color);
-  margin-left: 8px;
 }
 
 .fa-circle-check {
   color: var(--complete-green-color);
-  margin-left: 8px;
 }
 
 .fa-circle-xmark {
   color: var(--light-red);
-  margin-left: 8px;
 }
 
 .fa-circle-exclamation {
   color: var(--warning);
-  margin-left: 8px;
 }
 
 .btn-element-to-do {
