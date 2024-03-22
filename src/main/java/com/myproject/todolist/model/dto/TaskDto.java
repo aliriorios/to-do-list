@@ -2,24 +2,16 @@ package com.myproject.todolist.model.dto;
 
 import com.myproject.todolist.model.entity.Task;
 import com.myproject.todolist.model.entity.enums.TaskStatus;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
 
-@NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Getter
-@Setter
 public class TaskDto implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @EqualsAndHashCode.Include
     private Long id;
     private String title;
     private String description;
@@ -27,12 +19,32 @@ public class TaskDto implements Serializable {
     private Integer taskStatus;
 
     //constructor
+    public TaskDto() {
+    }
+
     public TaskDto(Task task) {
         this.id = task.getId();
         this.title = task.getTitle();
         this.description = task.getDescription();
         this.delivery = task.getDelivery();
         setTaskStatus(task.getTaskStatus());
+    }
+
+    //default getter and setter
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public LocalDate getDelivery() {
+        return delivery;
     }
 
     //custom getter and setter to TaskStatus enum
@@ -44,5 +56,18 @@ public class TaskDto implements Serializable {
         if (taskStatus != null) {
             this.taskStatus = taskStatus.getCode();
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TaskDto taskDto = (TaskDto) o;
+        return Objects.equals(id, taskDto.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
