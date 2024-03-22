@@ -2,20 +2,26 @@ package com.myproject.todolist.model.entity;
 
 import com.myproject.todolist.model.entity.enums.TaskStatus;
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Entity
 @Table(name = "tasks")
+@NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Data
 public class Task implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
 
     private String title;
@@ -29,44 +35,12 @@ public class Task implements Serializable {
     private Integer taskStatus;
 
     //constructor
-    public Task() {
-    }
-
     public Task(Long id, String title, String description, LocalDate delivery, TaskStatus taskStatus) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.delivery = delivery;
         setTaskStatus(taskStatus);
-    }
-
-    //default getter and setter
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDate getDelivery() {
-        return delivery;
     }
 
     public void setDelivery(LocalDate delivery) {
@@ -82,18 +56,5 @@ public class Task implements Serializable {
         if (taskStatus != null) {
             this.taskStatus = taskStatus.getCode();
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Task task = (Task) o;
-        return Objects.equals(id, task.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }
